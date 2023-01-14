@@ -13,6 +13,8 @@ const url = `${
 let chapters: IChapter[] = [];
 try {
   const res = await fetch(url);
+  console.log(await res.text());
+
   chapters = (await res.json()) ?? [];
 } catch (error) {
   console.error(error);
