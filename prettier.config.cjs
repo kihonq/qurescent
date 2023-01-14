@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   astroAllowShorthand: true,
   plugins: [require.resolve("prettier-plugin-astro")],
   overrides: [
