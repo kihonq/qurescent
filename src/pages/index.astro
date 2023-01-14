@@ -5,10 +5,9 @@ import Layout from "@layouts/Layout.astro";
 
 import type { IChapter } from "_types/chapter";
 
-const url = new URL(
-  "/api/chapters",
+const url = `${
   import.meta.env.PROD ? "" : "http://127.0.0.1:3000"
-);
+}/api/chapters`;
 const res = await fetch(url);
 let chapters: IChapter[] = (await res.json()) ?? [];
 
