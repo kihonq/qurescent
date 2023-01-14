@@ -3,22 +3,9 @@ import Fuse from "fuse.js";
 import Chapter from "@components/Chapter";
 import Layout from "@layouts/Layout.astro";
 
-import type { IChapter } from "_types/chapter";
+import { fetchChapters } from "@helpers/chapter";
 
-const url = `${
-  import.meta.env.PROD
-    ? "https://qurescent.netlify.app"
-    : "http://127.0.0.1:3000"
-}/api/chapters`;
-let chapters: IChapter[] = [];
-try {
-  const res = await fetch(url);
-  console.log(await res.text());
-
-  chapters = (await res.json()) ?? [];
-} catch (error) {
-  console.error(error);
-}
+let chapters = await fetchChapters();
 
 const q = Astro.url.searchParams.get("q")?.toLowerCase();
 
@@ -46,7 +33,15 @@ if (q) {
       </form>
     </div>
     <div class="grid gap-4 grid-cols-2 md:grid-cols-4">
-      {chapters.map((chapter) => <Chapter chapter={chapter} />)}
+      {
+        !chapters.length ? (
+          <p class="text-center text-gray-300 dark:text-gray-800">
+            No surah found.
+          </p>
+        ) : (
+          chapters.map((chapter) => <Chapter chapter={chapter} />)
+        )
+      }
     </div>
   </main>
 </Layout>

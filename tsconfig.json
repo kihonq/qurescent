@@ -12,6 +12,9 @@
       "@stores/*": [
         "src/stores/*"
       ],
+      "@helpers/*": [
+        "src/helpers/*"
+      ],
       "_types/*": [
         "src/types/*"
       ]
