@@ -1,40 +1,87 @@
 ---
+import Footer from "./Footer";
+import Header from "./Header";
+
 export interface Props {
-  title: string;
+  title?: string;
 }
 
-const { title } = Astro.props;
+const { title = "Qurescent | Modern UI Quran" } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<script is:inline>
+  const colorMode = (() => {
+    const preference = window.localStorage.getItem("qurescent.theme");
+    const hasExplicitPreference = typeof preference === "string";
+    if (hasExplicitPreference) {
+      return preference;
+    }
+    const mediaQuery = "(prefers-color-scheme: dark)";
+    const mql = window.matchMedia(mediaQuery);
+    const hasImplicitPreference = typeof mql.matches === "boolean";
+    if (hasImplicitPreference) {
+      return mql.matches ? "dark" : "light";
+    }
+    return "light";
+  })();
+
+  window.localStorage.setItem("qurescent.theme", colorMode);
+  document.documentElement.style.setProperty("--initial-theme", colorMode);
+  document.documentElement.setAttribute("class", colorMode);
+</script>
+
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preload" href="https://rsms.me/inter/inter.css" as="style" />
+    <link rel="preconnect" href="https://api.alquran.cloud" />
+    <link
+      rel="preload"
+      href="/fonts/hafs-uthmanic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/hafs-uthmanic.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/surah-name.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/surah-name.woff"
+      as="font"
+      type="font/woff"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/surah-name.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
   </head>
-  <body>
-    <slot />
+  <body class="bg-vanilla dark:bg-oreo transition duration-150">
+    <div class="flex flex-col h-screen justify-between">
+      <Header client:load />
+      <div class="flex justify-center mb-auto">
+        <slot />
+      </div>
+      <Footer />
+    </div>
   </body>
 </html>
-<style is:global>
-  :root {
-    --accent: 124, 58, 237;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      #da62c4 30%,
-      white 60%
-    );
-  }
-  html {
-    font-family: system-ui, sans-serif;
-    background-color: #f6f6f6;
-  }
-  code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-  }
-</style>
