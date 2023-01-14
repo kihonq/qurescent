@@ -7,10 +7,7 @@ const chapterID = Number(Astro.params.id ?? 0);
 const chapter = await fetchChapter(chapterID);
 
 if (!chapter) {
-  return new Response(null, {
-    status: 404,
-    statusText: "Not found",
-  });
+  return Astro.redirect("/404");
 }
 ---
 

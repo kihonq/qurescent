@@ -5,11 +5,13 @@ import Header from "./Header";
 export interface Props {
   title?: string;
   description?: string;
+  status?: number;
 }
 
 const {
   title = "Qurescent | Modern UI Quran",
   description = "Modern UI Quran",
+  status = 200,
 } = Astro.props;
 ---
 
@@ -79,13 +81,19 @@ const {
     />
   </head>
   <body class="bg-vanilla dark:bg-oreo transition duration-150">
-    <div class="flex flex-col h-screen justify-between">
-      <Header client:load />
-      <div class="flex justify-center mb-auto">
+    {
+      status === 404 ? (
         <slot />
-      </div>
-      <Footer />
-    </div>
+      ) : (
+        <div class="flex flex-col h-screen justify-between">
+          <Header client:load />
+          <div class="flex justify-center mb-auto">
+            <slot />
+          </div>
+          <Footer />
+        </div>
+      )
+    }
   </body>
 </html>
 

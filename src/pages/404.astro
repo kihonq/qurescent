@@ -1,16 +1,22 @@
-<div class="noise"></div>
-<div class="overlay"></div>
-<div class="terminal">
-  <h1>Error <span class="errorcode">404</span></h1>
-  <p class="output">
-    The page you are looking for might have been removed, had its name changed
-    or is temporarily unavailable.
-  </p>
-  <p class="output">
-    Please go back or <a href="/">return to the homepage</a>.
-  </p>
-  <p class="output">Good luck.</p>
-</div>
+---
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="404" status={404} description="Looks like you've lost">
+  <div class="noise"></div>
+  <div class="overlay"></div>
+  <div class="terminal">
+    <h1>Error <span class="errorcode">404</span></h1>
+    <p class="output">
+      The page you are looking for might have been removed, had its name changed
+      or is temporarily unavailable.
+    </p>
+    <p class="output">
+      Please go back or <a href="/">return to the homepage</a>.
+    </p>
+    <p class="output">Good luck.</p>
+  </div>
+</Layout>
 
 <style lang="scss">
   html {
@@ -45,7 +51,7 @@
     pointer-events: none;
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: repeating-linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0,
@@ -92,8 +98,7 @@
   .terminal {
     box-sizing: inherit;
     position: absolute;
-    height: 100%;
-    width: 1000px;
+    width: 100%;
     max-width: 100%;
     padding: 4rem;
     text-transform: uppercase;
@@ -108,19 +113,6 @@
   .output::before {
     content: "> ";
   }
-
-  /*
-.input {
-  color: rgba(192, 255, 192, 0.8);
-  text-shadow:
-      0 0 1px rgba(51, 255, 51, 0.4),
-      0 0 2px rgba(255, 255, 255, 0.8);
-}
-
-.input::before {
-  content: "$ ";
-}
-*/
 
   a {
     color: #fff;
