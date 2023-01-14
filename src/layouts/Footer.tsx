@@ -79,7 +79,11 @@ const Footer = () => {
             All right reserved.
           </div>
 
-          <a href="https://github.com/kihonq" class="inline-block">
+          <a
+            href="https://github.com/kihonq"
+            aria-label="Go to kihonq's Github"
+            class="inline-block"
+          >
             <IconGithub />
           </a>
         </div>

@@ -4,9 +4,13 @@ import Header from "./Header";
 
 export interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title = "Qurescent | Modern UI Quran" } = Astro.props;
+const {
+  title = "Qurescent | Modern UI Quran",
+  description = "Modern UI Quran",
+} = Astro.props;
 ---
 
 <script is:inline>
@@ -36,6 +40,7 @@ const { title = "Qurescent | Modern UI Quran" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
     <link rel="preload" href="https://rsms.me/inter/inter.css" as="style" />
     <link rel="preconnect" href="https://api.alquran.cloud" />
     <link
@@ -73,7 +78,6 @@ const { title = "Qurescent | Modern UI Quran" } = Astro.props;
       type="font/woff2"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
   </head>
   <body class="bg-vanilla dark:bg-oreo transition duration-150">
     <div class="flex flex-col h-screen justify-between">
