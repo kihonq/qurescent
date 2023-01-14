@@ -1,6 +1,6 @@
-import { Component } from "solid-js";
+import type { Component } from "solid-js";
 
-import { SurahCode, type IChapter } from "~/types/chapter";
+import type { IChapter } from "_types/chapter";
 
 const Chapter: Component<{ chapter: IChapter }> = (props) => {
   return (

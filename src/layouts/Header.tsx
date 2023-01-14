@@ -1,9 +1,13 @@
 import { Component, createEffect, onMount } from "solid-js";
 
-import { storeTheme, Theme, theme, setTheme } from "@stores/theme";
+import { storeTheme, Theme, themeAtom } from "@stores/theme";
 import IconLogo from "@components/icons/logo";
+import { useStore } from "@nanostores/solid";
 
 const Header: Component = () => {
+  const theme = useStore(themeAtom);
+  const setTheme = (theme: Theme | undefined) => themeAtom.set(theme);
+
   onMount(() => {
     const root = document.documentElement;
     const initialColorValue = root.style.getPropertyValue(

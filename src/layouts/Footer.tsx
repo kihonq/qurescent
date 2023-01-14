@@ -40,7 +40,7 @@ const Footer = () => {
             >
               AstroJS
             </a>
-            &nbsp;&&nbsp;
+            &nbsp;+&nbsp;
             <a
               href="https://github.com/solidjs"
               class="transition duration-150 hover:text-gray-700 dark:hover:text-amber-300"
