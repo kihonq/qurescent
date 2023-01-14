@@ -32,7 +32,7 @@ const Footer = () => {
               <div class="transition duration-150 font-bold dark:text-slate-200 text-2xl">
                 Qurescent
               </div>
-              <span class="group-hover:opacity-100 transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute left-16 -translate-x-1/2 translate-y-full opacity-0 mx-auto">
+              <span class="group-hover:opacity-100 transition-opacity max-h-20 bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute left-16 -translate-x-1/2 translate-y-full opacity-0 mx-auto">
                 Hey there earthling from ((COUNTRY_NAME))!
               </span>
             </div>
