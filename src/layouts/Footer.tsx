@@ -28,8 +28,13 @@ const Footer = () => {
       <div class="container flex flex-col md:flex-row gap-8 md:gap-16 text-sm">
         <div class="flex-1">
           <div class="flex items-center gap-1">
-            <div class="transition duration-150 font-bold dark:text-slate-200 text-2xl">
-              Qurescent
+            <div class="group flex relative">
+              <div class="transition duration-150 font-bold dark:text-slate-200 text-2xl">
+                Qurescent
+              </div>
+              <span class="group-hover:opacity-100 transition-opacity bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute left-16 -translate-x-1/2 translate-y-full opacity-0 mx-auto">
+                Hey there earthling from ((COUNTRY_NAME))!
+              </span>
             </div>
           </div>
           <div class="transition duration-150 text-gray-500 dark:text-slate-400">
