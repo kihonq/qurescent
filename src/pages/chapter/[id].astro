@@ -3,8 +3,19 @@ import Verse from "@components/Verse";
 import Layout from "@layouts/Layout.astro";
 import type { IChapter } from "_types/chapter";
 
-const res = await fetch(`http://127.0.0.1:3000/api/chapter/${Astro.params.id}`);
-const chapter = (await res.json()) as IChapter;
+const url = `${
+  import.meta.env.PROD
+    ? "https://qurescent.netlify.app"
+    : "http://127.0.0.1:3000"
+}/api/chapter/${Astro.params.id}`;
+let chapter: IChapter;
+try {
+  const res = await fetch(url);
+  chapter = (await res.json()) as IChapter;
+} catch (error) {
+  chapter = {} as IChapter;
+  console.error(error);
+}
 ---
 
 <Layout

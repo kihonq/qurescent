@@ -10,8 +10,13 @@ const url = `${
     ? "https://qurescent.netlify.app"
     : "http://127.0.0.1:3000"
 }/api/chapters`;
-const res = await fetch(url);
-let chapters: IChapter[] = (await res.json()) ?? [];
+let chapters: IChapter[] = [];
+try {
+  const res = await fetch(url);
+  chapters = (await res.json()) ?? [];
+} catch (error) {
+  console.error(error);
+}
 
 const q = Astro.url.searchParams.get("q")?.toLowerCase();
 
