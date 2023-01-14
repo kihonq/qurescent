@@ -5,7 +5,11 @@ import Layout from "@layouts/Layout.astro";
 
 import type { IChapter } from "_types/chapter";
 
-const res = await fetch("http://127.0.0.1:3000/api/chapters");
+const url = new URL(
+  "/api/chapters",
+  import.meta.env.PROD ? "" : "http://127.0.0.1:3000"
+);
+const res = await fetch(url);
 let chapters: IChapter[] = (await res.json()) ?? [];
 
 const q = Astro.url.searchParams.get("q")?.toLowerCase();
