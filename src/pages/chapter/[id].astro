@@ -1,0 +1,49 @@
+---
+import Verse from "@components/Verse";
+import Layout from "@layouts/Layout.astro";
+import type { IChapter } from "_types/chapter";
+
+const res = await fetch(`http://127.0.0.1:3000/api/chapter/${Astro.params.id}`);
+const chapter = (await res.json()) as IChapter;
+---
+
+<Layout
+  title={`Surah ${chapter.englishName}: ${chapter.englishNameTranslation}`}
+  description={`Surah ${chapter.englishName}: ${chapter.englishNameTranslation}`}
+>
+  <section
+    class="xl:container xl:mx-auto bg-gray-100 dark:bg-container-300 transition duration-150 mt-7 p-4 flex flex-col rounded-2xl"
+  >
+    <div class="m-4 flex flex-row justify-between">
+      <h2
+        class="flex space-x-1 text-base dark:text-slate-300 transition duration-150 justify-center"
+      >
+        <strong>{chapter.englishName}</strong>:
+        <span>{chapter.englishNameTranslation}</span>
+      </h2>
+      <h2
+        class="transition duration-150 text-4xl dark:text-slate-300 font-surah-name"
+      >
+        {chapter.id.toString().padStart(3, "0")}
+      </h2>
+    </div>
+    {
+      chapter.id !== 1 && (
+        <div class="mt-4 flex justify-center">
+          <h1 class="transition duration-150 text-4xl dark:text-slate-300 font-hafs-uthmanic">
+            ﷽
+          </h1>
+        </div>
+      )
+    }
+    <div class="flex justify-center">
+      <article dir="rtl" class="prose lg:prose-xl dark:prose-invert mt-10 mx-5">
+        <div
+          class="grid grid-cols-1 divide-y dark:divide-container-50 divide-gray-200"
+        >
+          {chapter.verses.map((verse) => <Verse verse={verse} />)}
+        </div>
+      </article>
+    </div>
+  </section>
+</Layout>

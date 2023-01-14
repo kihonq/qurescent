@@ -29,7 +29,7 @@ const Header: Component = () => {
   });
 
   return (
-    <div class="backdrop-blur-md transition duration-150 bg-white/30 dark:bg-neutral-900/50 sticky top-0 z-30 w-full py-6 px-8 flex flex-col md:flex-row gap-4">
+    <div class="backdrop-blur-md transition duration-150 bg-white/30 dark:bg-neutral-900/50 sticky top-0 z-30 w-full py-6 px-8 flex items-center">
       <div class="flex items-center flex-1">
         <IconLogo />
         <a

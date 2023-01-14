@@ -1,6 +1,6 @@
-import { Component, JSX } from "solid-js";
-import { IChapterVerse } from "~/types/chapter";
-import { Tajweed, TAJWEED_META } from "~/types/verse";
+import type { Component, JSX } from "solid-js";
+import type { IChapterVerse } from "_types/chapter";
+import { Tajweed, TAJWEED_META } from "_types/verse";
 
 const Verse: Component<{ verse: IChapterVerse }> = (props) => {
   let rawVerse = props.verse.text;

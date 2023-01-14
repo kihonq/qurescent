@@ -72,7 +72,7 @@ const Footer = () => {
           )}
         </For>
 
-        <div class="transition duration-150 dark:text-slate-200 space-y-2 text-right">
+        <div class="transition duration-150 dark:text-slate-200 space-y-2 text-center md:text-right">
           <div class="text-xs">
             Copyright © 2023 kihong
             <br />
