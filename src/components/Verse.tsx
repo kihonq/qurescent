@@ -3,7 +3,10 @@ import type { IChapterVerse } from "_types/chapter";
 import { Tajweed, TAJWEED_META } from "_types/verse";
 
 const Verse: Component<{ verse: IChapterVerse }> = (props) => {
-  let rawVerse = props.verse.text;
+  let rawVerse = props.verse.text.replace(
+    /(?<![\u0627\u0623\u0625\u0648])[\u0652](?![\u0627\u0623\u0625\u0648])/g,
+    "\u06E1"
+  );
   const tajweedRegex =
     /<tajweed class=(.*?)>(.*?)<\/tajweed>|<span class=(.*?)>(.*?)<\/span>/g;
 
@@ -19,8 +22,7 @@ const Verse: Component<{ verse: IChapterVerse }> = (props) => {
       const start = rawVerse.indexOf(match);
       const char = isEnd
         ? match.replace(tajweedRegex, "$4")
-        : match.replace(tajweedRegex, "$2");
-
+        : match.replace(tajweedRegex, "$2").replace(/((?<=َ)ٲ|(?<!َ)ٲ)/g, "ٰ");
       rawVerse = rawVerse.replace(match, "");
 
       return [start ?? 0, <span class={className}>{char}</span>];
@@ -48,4 +50,5 @@ const Verse: Component<{ verse: IChapterVerse }> = (props) => {
   );
 };
 
+// ٱلصَّلَوٰةذَٰلِكَ
 export default Verse;

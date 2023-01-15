@@ -34,6 +34,7 @@ export const fetchChapter = async (
       verses: verses.map(
         ({
           text_uthmani_tajweed,
+          verse_key,
           id,
         }: {
           text_uthmani_tajweed: string;
@@ -42,6 +43,7 @@ export const fetchChapter = async (
         }) => ({
           id,
           text: text_uthmani_tajweed,
+          numberInSurah: verse_key.split(":")[1],
         })
       ),
       name: name_arabic,
