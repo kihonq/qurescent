@@ -29,21 +29,21 @@ const Header: Component = () => {
   });
 
   return (
-    <div class="backdrop-blur-md transition duration-150 bg-white/30 dark:bg-neutral-900/50 sticky top-0 z-30 w-full py-6 px-8 flex items-center">
-      <div class="flex items-center flex-1">
+    <div class="sticky top-0 z-30 flex w-full items-center bg-white/30 py-6 px-8 backdrop-blur-md transition duration-150 dark:bg-neutral-900/50">
+      <div class="flex flex-1 items-center">
         <IconLogo />
         <a
           href="/"
-          class="text-2xl transition duration-150 dark:text-slate-200 ml-1 font-bold"
+          class="ml-1 text-2xl font-bold transition duration-150 dark:text-slate-200"
         >
           Qurescent
         </a>
       </div>
-      <div class="w-12 h-6">
-        <label class="w-full h-full transition duration-150 bg-gray-300 dark:bg-container-50 rounded-full p-1 flex justify-between cursor-pointer select-none">
-          <span class="text-xs inline dark:hidden">🌞</span>
-          <span class="w-4 h-4 rounded-full transition duration-150 bg-gray-50 dark:bg-container-300 block float-right dark:float-left"></span>
-          <span class="text-xs hidden dark:inline">🌛</span>
+      <div class="h-6 w-12">
+        <label class="flex h-full w-full cursor-pointer select-none justify-between rounded-full bg-gray-300 p-1 transition duration-150 dark:bg-container-50">
+          <span class="inline text-xs dark:hidden">🌞</span>
+          <span class="float-right block h-4 w-4 rounded-full bg-gray-50 transition duration-150 dark:float-left dark:bg-container-300"></span>
+          <span class="hidden text-xs dark:inline">🌛</span>
           <input
             type="checkbox"
             checked={theme() === Theme.Dark}

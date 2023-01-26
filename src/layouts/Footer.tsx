@@ -24,20 +24,20 @@ const Footer = () => {
   ];
 
   return (
-    <div class="transition duration-150 bg-white dark:bg-neutral-900 w-full p-8 mt-8 flex justify-center">
-      <div class="container flex flex-col md:flex-row gap-8 md:gap-16 text-sm">
+    <div class="mt-8 flex w-full justify-center bg-white p-8 transition duration-150 dark:bg-neutral-900">
+      <div class="container flex flex-col gap-8 text-sm md:flex-row md:gap-16">
         <div class="flex-1">
           <div class="flex items-center gap-1">
-            <div class="group flex relative">
-              <div class="transition duration-150 font-bold dark:text-slate-200 text-2xl">
+            <div class="group relative flex">
+              <div class="text-2xl font-bold transition duration-150 dark:text-slate-200">
                 Qurescent
               </div>
-              <span class="group-hover:opacity-100 transition-opacity max-h-20 bg-gray-800 p-2 text-sm text-gray-100 rounded-md absolute left-16 -translate-x-1/2 translate-y-full opacity-0 mx-auto">
+              <span class="absolute left-16 mx-auto max-h-20 -translate-x-1/2 translate-y-full rounded-md bg-gray-800 p-2 text-sm text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
                 Hey there earthling from ((COUNTRY_NAME))!
               </span>
             </div>
           </div>
-          <div class="transition duration-150 text-gray-500 dark:text-slate-400">
+          <div class="text-gray-500 transition duration-150 dark:text-slate-400">
             With&nbsp;
             <a
               href="https://github.com/astrojs"
@@ -57,14 +57,14 @@ const Footer = () => {
 
         <For each={menus}>
           {(menu) => (
-            <div class="transition duration-150 dark:text-slate-200 mb-4">
+            <div class="mb-4 transition duration-150 dark:text-slate-200">
               <div class="font-bold">{menu.title}</div>
               <ul class="mt-2">
                 <For each={menu.children}>
                   {(child) => (
                     <li class="mt-2">
                       <a
-                        class="transition duration-150 dark:text-slate-200 hover:text-gray-700 dark:hover:text-amber-300"
+                        class="transition duration-150 hover:text-gray-700 dark:text-slate-200 dark:hover:text-amber-300"
                         href={child.href}
                       >
                         {child.name}
@@ -77,7 +77,7 @@ const Footer = () => {
           )}
         </For>
 
-        <div class="transition duration-150 dark:text-slate-200 space-y-2 text-center md:text-right">
+        <div class="space-y-2 text-center transition duration-150 dark:text-slate-200 md:text-right">
           <div class="text-xs">
             Copyright © 2023 kihong
             <br />

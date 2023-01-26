@@ -1,7 +1,7 @@
 const IconGithub = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class="stroke-gray-500 dark:stroke-slate-200 hover:stroke-gray-700 dark:hover:stroke-amber-300"
+    class="stroke-gray-500 hover:stroke-gray-700 dark:stroke-slate-200 dark:hover:stroke-amber-300"
     width="44"
     height="44"
     viewBox="0 0 24 24"

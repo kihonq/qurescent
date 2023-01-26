@@ -80,14 +80,14 @@ const {
       crossorigin="anonymous"
     />
   </head>
-  <body class="bg-vanilla dark:bg-oreo transition duration-150">
+  <body class="bg-vanilla transition duration-150 dark:bg-oreo">
     {
       status === 404 ? (
         <slot />
       ) : (
-        <div class="flex flex-col h-screen justify-between">
+        <div class="flex h-screen flex-col justify-between">
           <Header client:load />
-          <div class="flex justify-center mb-auto">
+          <div class="mb-auto flex justify-center">
             <slot />
           </div>
           <Footer />
