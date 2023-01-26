@@ -5,20 +5,17 @@ export const fetchChapter = async (
   chapterID: number
 ): Promise<IChapter | undefined> => {
   try {
-    const versesUrl = `https://api.quran.com/api/v4/quran/verses/uthmani_tajweed?chapter_number=${chapterID}`;
+    const tajweedURL = `https://api.quran.com/api/v4/quran/verses/uthmani_tajweed?chapter_number=${chapterID}`;
     const chapterURL = `https://api.quran.com/api/v4/chapters/${chapterID}?language=en`;
-
     const headers: Record<string, string> = isServer
       ? { "User-Agent": "chrome" }
       : {};
-
-    const chapterRes = await fetch(chapterURL, { headers });
-    const versesRes = await fetch(versesUrl, { headers });
-    const chapterRaw = await chapterRes.text();
-    const versesRaw = await versesRes.text();
-
-    const parsedChapter = JSON.parse(chapterRaw);
-    const parsedVerses = JSON.parse(versesRaw);
+    const [chapterRes, tajweedRes] = await Promise.all(
+      [chapterURL, tajweedURL].map((url) => fetch(url, { headers }))
+    );
+    const [parsedChapter, parsedTajweed] = await Promise.all(
+      [chapterRes, tajweedRes].map((res) => res.json())
+    );
 
     const {
       verses_count,
@@ -27,24 +24,34 @@ export const fetchChapter = async (
       translated_name: { name: englishNameTranslation },
       ...chapter
     } = parsedChapter.chapter;
-    const { verses } = parsedVerses;
 
     return {
       totalVerse: verses_count,
-      verses: verses.map(
-        ({
-          text_uthmani_tajweed,
-          verse_key,
-          id,
-        }: {
-          text_uthmani_tajweed: string;
-          verse_key: `${number}:${number}`;
-          id: number;
-        }) => ({
-          id,
-          text: text_uthmani_tajweed,
-          numberInSurah: verse_key.split(":")[1],
-        })
+      verses: await Promise.all(
+        parsedTajweed.verses.map(
+          async ({
+            text_uthmani_tajweed,
+            verse_key,
+            id,
+          }: {
+            text_uthmani_tajweed: string;
+            verse_key: `${number}:${number}`;
+            id: number;
+          }) => {
+            const versesRes = await fetch(
+              `https://api.quran.com/api/v4/verses/by_key/${verse_key}?language=en&words=true`,
+              { headers }
+            );
+            const parsedVersed = await versesRes.json();
+
+            return {
+              id,
+              text: text_uthmani_tajweed,
+              numberInSurah: Number(verse_key.split(":")[1]),
+              words: parsedVersed.verse.words,
+            };
+          }
+        )
       ),
       name: name_arabic,
       englishName: name_simple,
