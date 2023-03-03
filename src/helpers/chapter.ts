@@ -11,7 +11,9 @@ export const fetchChapter = async (
       ? { "User-Agent": "chrome" }
       : {};
     const [chapterRes, tajweedRes] = await Promise.all(
-      [chapterURL, tajweedURL].map((url) => fetch(url, { headers }))
+      [chapterURL, tajweedURL].map((url) =>
+        fetch(url, { headers, cache: "force-cache" })
+      )
     );
     const [parsedChapter, parsedTajweed] = await Promise.all(
       [chapterRes, tajweedRes].map((res) => res.json())
@@ -40,7 +42,7 @@ export const fetchChapter = async (
           }) => {
             const versesRes = await fetch(
               `https://api.quran.com/api/v4/verses/by_key/${verse_key}?language=en&words=true`,
-              { headers }
+              { headers, cache: "force-cache" }
             );
             const parsedVersed = await versesRes.json();
 
