@@ -2,6 +2,12 @@
 import Verse from "@components/Verse";
 import Layout from "@layouts/Layout.astro";
 import { fetchChapter } from "@helpers/chapter";
+// PROTOTYPE for wayfinder ticket #8 (multi-translation switcher UX) — throwaway, see
+// .agents/skills/prototype/SKILL.md. Drop these imports and the two extra mounts below once a
+// variant wins and the decision is folded into the real design.
+import TranslationStack from "@components/prototypes/translationSwitcher/TranslationStack";
+import PageHeaderExtras from "@components/prototypes/translationSwitcher/PageHeaderExtras";
+import PrototypeSwitcher from "@components/prototypes/translationSwitcher/PrototypeSwitcher";
 
 const chapterID = Number(Astro.params.id ?? 0);
 const chapter = await fetchChapter(chapterID);
@@ -9,6 +15,11 @@ const chapter = await fetchChapter(chapterID);
 if (!chapter) {
   return Astro.redirect("/404");
 }
+
+// PROTOTYPE: read on the server so SSR and the first client render agree — reading
+// window.location on the client only caused a hydration mismatch (SSR always saw "no window",
+// so a deep link like ?variant=B rendered A until the first click re-synced it).
+const initialVariant = Astro.url.searchParams.get("variant") ?? "A";
 ---
 
 <Layout
@@ -30,6 +41,7 @@ if (!chapter) {
       >
         {chapter.id.toString().padStart(3, "0")}
       </h2>
+      <PageHeaderExtras initialVariant={initialVariant} client:load />
     </div>
     {
       chapter.id !== 1 && (
@@ -45,8 +57,20 @@ if (!chapter) {
         dir="rtl"
         class="prose mx-5 mt-10 dark:prose-invert lg:prose-2xl"
       >
-        {chapter.verses.map((verse) => <Verse verse={verse} />)}
+        {
+          chapter.verses.map((verse) => (
+            <>
+              <Verse verse={verse} />
+              <TranslationStack
+                verseNumber={verse.numberInSurah}
+                initialVariant={initialVariant}
+                client:load
+              />
+            </>
+          ))
+        }
       </article>
     </div>
   </section>
+  <PrototypeSwitcher initialVariant={initialVariant} client:load />
 </Layout>
