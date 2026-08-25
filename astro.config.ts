@@ -1,12 +1,19 @@
 import { defineConfig } from "astro/config";
 import solidJS from "@astrojs/solid-js";
 import starlight from "@astrojs/starlight";
+import mermaid from "astro-mermaid";
 import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
   output: "static",
   integrations: [
+    // Must precede Starlight so rehype processes ```mermaid fences.
+    mermaid({
+      theme: "neutral",
+      autoTheme: true,
+      enableLog: false,
+    }),
     solidJS(),
     starlight({
       title: "Qurescent",
