@@ -48,6 +48,10 @@ export default defineConfig({
             { label: "Lineage & history", slug: "guide/lineage" },
           ],
         },
+        {
+          label: "About",
+          slug: "about",
+        },
       ],
     }),
   ],

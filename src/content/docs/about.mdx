@@ -1,0 +1,49 @@
+---
+title: About
+description: What Qurescent is, credits, and licensing — including QCF V4 font attribution.
+editUrl: false
+---
+
+Qurescent is a **static** techdoc for learning the Quran: Starlight guides plus a
+Madani mushaf under [/read/](/read/). Sedekah jariah — non-commercial, ads-free.
+No runtime Quran APIs; verse and tajwid correctness are treated as zero-tolerance.
+
+**Alpha:** [v0.1.0-alpha.0](https://github.com/kihonq/qurescent/releases/tag/v0.1.0-alpha.0) ·
+source on [GitHub](https://github.com/kihonq/qurescent).
+
+## Credits
+
+### QCF V4 tajweed fonts
+
+Mushaf glyphs are rendered with the **Quran Complex Font (QCF) V4** tajweed color
+fonts (COLRv1).
+
+| | |
+| --- | --- |
+| **Font** | QCF V4 (Hafs tajweed) |
+| **Developer** | [Ayman24x7](https://github.com/quran/quran.com-frontend-next/issues/2322) |
+| **Obtain via** | [QUL — qul.tarteel.ai](https://qul.tarteel.ai) (Quran Foundation library) |
+| **Permission** | Granted for Qurescent on condition the site stays **non-commercial** and **ads-free**, with attribution here (GitHub [#13](https://github.com/kihonq/qurescent/issues/13)) |
+
+Font binaries are **not** shipped in the Git repository (`bun run data:fonts` downloads
+them locally). They are **not** covered by this project’s MIT license — see
+[`NOTICE`](https://github.com/kihonq/qurescent/blob/main/NOTICE) in the repo.
+
+### Data & other sources
+
+Chapter metadata, word-by-word glosses, and translations are ingested once into
+`src/data/`. Named sources and licenses: [`SOURCES.md`](https://github.com/kihonq/qurescent/blob/main/src/data/SOURCES.md).
+
+Tajwid **color names** on the [color legend](/guide/tajwid/color-legend/) follow the
+published Dar Al-Maarifah Mus’haf al-Tajweed system (draft; spot-check still open).
+
+### Stack
+
+Astro, Starlight, React, Bun, Cloudflare Pages — and the usual open-source
+dependencies listed in `package.json`.
+
+## License
+
+Application code and project documentation: **MIT** — see
+[`LICENSE`](https://github.com/kihonq/qurescent/blob/main/LICENSE).  
+Fonts and third-party Quran data: **separate terms** — see `NOTICE` and `SOURCES.md`.

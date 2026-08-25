@@ -64,4 +64,6 @@ If you find a problem that could misrepresent Quran text in production, **do not
 
 ## License note
 
-There is **no LICENSE file yet**. Do not assume MIT/Apache. Ask before reusing substantial code elsewhere. Upstream data and QCF fonts have their **own** terms — see SOURCES.md.
+Application code is **MIT** ([`LICENSE`](./LICENSE)). QCF V4 fonts and upstream Quran data
+have **separate** terms ([`NOTICE`](./NOTICE), [`SOURCES.md`](./src/data/SOURCES.md)). Do not
+relicense or redistribute the font binaries as MIT.

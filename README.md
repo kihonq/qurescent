@@ -40,8 +40,17 @@ Requires [Bun](https://bun.sh) (`packageManager` is `bun@1.3.11`). Node alone is
 
 ### Fonts & data
 
-- **QCF V4** fonts are **not in git** (size + proprietary). Permission: non-commercial / ads-free; credit [qul.tarteel.ai](https://qul.tarteel.ai). Details: [`src/data/SOURCES.md`](./src/data/SOURCES.md).
-- Chapter JSON + translations are checked in under `src/data/` (ingest once; no runtime Quran API).
+- **QCF V4** fonts are **not in git** (size + proprietary). Download with `bun run data:fonts`.
+- Chapter JSON + translations are checked in under `src/data/` (ingest once; no runtime Quran API). Details: [`src/data/SOURCES.md`](./src/data/SOURCES.md).
+
+## QCF V4 font attribution
+
+Mushaf tajweed glyphs use the **Quran Complex Font (QCF) V4**, developed with credit to
+**Ayman24x7**. Fonts are obtained via [QUL (qul.tarteel.ai)](https://qul.tarteel.ai).
+Use in Qurescent is permitted only while the project stays **non-commercial** and
+**ads-free**, with attribution in the site credits ([About](https://qurescent.kihong.dev/about/);
+issue [#13](https://github.com/kihonq/qurescent/issues/13)). Font files are **not** MIT-licensed
+— see [`NOTICE`](./NOTICE).
 
 ## Repo layout (high level)
 
@@ -62,10 +71,12 @@ See **[CONTRIBUTING.md](./CONTRIBUTING.md)**. Issues and decisions live on GitHu
 
 ## Credits
 
-- Mushaf glyphs: **QCF V4** (permission via #13; not redistributed in this repo)
-- Static text / WBW / translations: sources listed in [`src/data/SOURCES.md`](./src/data/SOURCES.md)
-- Tajwid color *names*: draft aligned to Dar Al-Maarifah’s published legend — [color legend](https://qurescent.kihong.dev/guide/tajwid/color-legend/) still pending human spot-check
+- Full site credits: **[About](https://qurescent.kihong.dev/about/)**
+- Mushaf glyphs: **QCF V4** (Ayman24x7 / QUL — see attribution section above)
+- Static text / WBW / translations: [`src/data/SOURCES.md`](./src/data/SOURCES.md)
+- Tajwid color *names*: draft aligned to Dar Al-Maarifah — [color legend](https://qurescent.kihong.dev/guide/tajwid/color-legend/) pending human spot-check
 
 ## License
 
-**No SPDX license file yet** — the GitHub repo is also still **private**. Until a license is chosen and the repo is public, treat the code as all-rights-reserved and ask before redistributing. Font and data terms are separate from any future code license (see SOURCES.md and CONTRIBUTING.md).
+Code and project docs: **[MIT](./LICENSE)**.  
+QCF V4 fonts and third-party Quran data: **not MIT** — see **[NOTICE](./NOTICE)** and `SOURCES.md`.

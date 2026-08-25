@@ -1,0 +1,27 @@
+# NOTICE
+
+Qurescent application code and documentation in this repository are licensed
+under the MIT License (see `LICENSE`).
+
+## QCF V4 tajweed fonts (not licensed under MIT)
+
+The **Quran Complex Font (QCF) V4** tajweed color fonts used by the mushaf
+reader are **proprietary**. They are **not** included in this Git repository.
+
+- **Permission** to use them in Qurescent was granted by the font developer
+  **Ayman24x7** (Discord), conditional on the project remaining
+  **non-commercial** and **ads-free**, with **attribution in the site credits**.
+  See GitHub issue [#13](https://github.com/kihonq/qurescent/issues/13).
+- **Obtain fonts** from [QUL (qul.tarteel.ai)](https://qul.tarteel.ai) / the
+  Quran Foundation CDN paths documented in `scripts/download-qcf-fonts.mjs`
+  (`bun run data:fonts`).
+- **Do not** redistribute the font binaries under the MIT license, publish them
+  to npm, or use them in a commercial / ads-supported fork without separate
+  permission from the font developer.
+
+Site credit: [/about/](https://qurescent.kihong.dev/about/).
+
+## Other third-party data
+
+Static chapter text, word-by-word, and translations under `src/data/` come from
+upstream sources with their own terms. See `src/data/SOURCES.md`.

@@ -12,7 +12,7 @@ Ingested: 2026-08-25T13:28:31.478Z
 
 ## QCF V4 fonts (deploy)
 
-- **Permission**: Ayman24x7 (#13) — non-commercial, ads-free; credit qul.tarteel.ai.
+- **Permission**: Ayman24x7 (#13) — non-commercial, ads-free; **attribution required** on the site ([/about/](https://qurescent.kihong.dev/about/)) and in repo `NOTICE`. Source: [qul.tarteel.ai](https://qul.tarteel.ai).
 - **Local**: `bun run data:fonts` → `public/fonts/qcf-v4/` (~628MB, gitignored).
 - **Ship**: fonts are part of the Pages artifact (`dist/fonts/*`), not git. File count stays under the free Pages 20k limit.
 - **CI / machine**: run `data:fonts` once and cache `public/fonts/qcf-v4/` across builds (do not re-download every Pages build — 20m timeout risk). Prefer Wrangler deploy from a machine that already has the cache: `bun run deploy`.
