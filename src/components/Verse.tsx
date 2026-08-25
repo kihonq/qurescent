@@ -95,7 +95,7 @@ const Verse: Component<{ verse: IVerse }> = (props) => {
                 <Show when={word.translation}>
                   <span
                     dir="ltr"
-                    class="mt-0.5 text-center text-xs text-gray-500 dark:text-slate-400"
+                    class="mt-0.5 text-center text-xs text-(--sl-color-gray-2)"
                   >
                     {word.translation}
                   </span>
@@ -115,7 +115,7 @@ const Verse: Component<{ verse: IVerse }> = (props) => {
         <button
           type="button"
           onClick={copyVerse}
-          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-slate-300"
+          class="cursor-pointer text-xs text-(--sl-color-white) transition-colors duration-200 hover:text-(--sl-color-accent-high)"
           aria-label={`Copy ayah ${props.verse.key}`}
         >
           {copied() ? "Copied" : "Copy"}

@@ -21,24 +21,32 @@ export const TranslationSettingsDrawer: Component = () => {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        class="rounded-full border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 dark:border-gray-600 dark:text-slate-300 dark:hover:bg-gray-800"
+        class="cursor-pointer rounded-full border border-(--sl-color-gray-5) px-2.5 py-1 text-xs font-medium text-(--sl-color-white) transition-colors duration-200 hover:border-(--sl-color-accent) hover:bg-(--sl-color-gray-6)"
         aria-expanded={open()}
-        aria-haspopup="true"
+        aria-haspopup="dialog"
+        aria-controls="translation-settings"
       >
         Aa Translations
       </button>
       <Show when={open()}>
-        <div class="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-container-300">
+        <div
+          id="translation-settings"
+          role="dialog"
+          aria-label="Enabled translations"
+          class="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-(--sl-color-gray-5) bg-(--sl-color-gray-6) p-2 shadow-lg"
+        >
           <For each={translationCatalog}>
             {(t) => (
-              <label class="flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-800">
+              <label class="flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-sm text-(--sl-color-white) transition-colors duration-200 hover:bg-(--sl-color-gray-5)">
                 <input
                   type="checkbox"
                   checked={enabled().includes(t.code)}
                   onChange={() => toggleTranslation(t.code)}
                 />
-                <span class="text-gray-700 dark:text-slate-300">{t.language}</span>
-                <span class="ml-auto text-xs text-gray-400">{t.code}</span>
+                <span>{t.language}</span>
+                <span class="ml-auto text-xs text-(--sl-color-gray-2)">
+                  {t.code}
+                </span>
               </label>
             )}
           </For>
@@ -63,8 +71,8 @@ const TranslationStack: Component<{
           const text = () => props.translations[t.id] ?? "";
           return (
             <Show when={text()}>
-              <p class="text-sm text-gray-600 dark:text-slate-400">
-                <span class="mr-1 text-xs font-medium text-gray-400 dark:text-slate-500">
+              <p class="text-sm leading-relaxed text-(--sl-color-gray-1)">
+                <span class="mr-1 text-xs font-medium text-(--sl-color-gray-2)">
                   {t.editionName}:
                 </span>
                 {text()}
