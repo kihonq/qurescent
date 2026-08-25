@@ -148,7 +148,7 @@ export default function ChapterReader({
         </div>
       ) : null}
 
-      <div className="relative min-h-[12rem]">
+      <div className="relative min-h-48">
         {!fontsReady ? <MushafLoader lines={loaderLines} /> : null}
 
         <article
