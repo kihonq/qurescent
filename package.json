@@ -9,7 +9,7 @@
     "start": "astro preview",
     "prebuild": "astro check",
     "build": "astro build",
-    "deploy": "bun run build && wrangler pages deploy dist --project-name=qurescent",
+    "deploy": "bun run build && wrangler pages deploy dist --project-name=qurescent --branch=main",
     "typecheck": "astro check",
     "data:ingest": "bun scripts/ingest-quran-data.mjs",
     "data:fonts": "bun scripts/download-qcf-fonts.mjs",
