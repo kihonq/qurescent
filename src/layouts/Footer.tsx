@@ -7,11 +7,15 @@ export default function Footer() {
         <div>
           <div className="font-bold text-(--sl-color-white)">Qurescent</div>
           <p className="mt-1 max-w-md text-(--sl-color-gray-2)">
-            Static techdoc for the Quran. Tajweed fonts via{" "}
+            Static techdoc for the Quran. QCF V4 tajweed fonts — credit{" "}
+            <a href="/about/" className="underline">
+              About
+            </a>{" "}
+            (Ayman24x7 /{" "}
             <a href="https://qul.tarteel.ai" className="underline">
-              QUL / qul.tarteel.ai
+              QUL
             </a>
-            .
+            ).
           </p>
         </div>
         <a
