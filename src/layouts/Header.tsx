@@ -1,4 +1,5 @@
-import { Component, createEffect, onMount } from "solid-js";
+import { createEffect, onMount } from "solid-js";
+import type { Component } from "solid-js";
 
 import { storeTheme, Theme, themeAtom } from "@stores/theme";
 import IconLogo from "@components/icons/logo";

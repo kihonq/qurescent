@@ -4,14 +4,13 @@ import { defineConfig } from "astro/config";
 import solidJS from "@astrojs/solid-js";
 
 // https://astro.build/config
-import tailwind from "@astrojs/tailwind";
-
-// https://astro.build/config
-import { netlifyEdgeFunctions } from "@astrojs/netlify";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "server",
-  integrations: [solidJS(), tailwind()],
-  adapter: netlifyEdgeFunctions(),
+  output: "static",
+  integrations: [solidJS()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

@@ -3,6 +3,14 @@ import Verse from "@components/Verse";
 import Layout from "@layouts/Layout.astro";
 import { fetchChapter } from "@helpers/chapter";
 
+// 114 surahs, fixed and never changing — no need to round-trip through the
+// chapter-list API just to enumerate ids for a static build.
+export function getStaticPaths() {
+  return Array.from({ length: 114 }, (_, i) => ({
+    params: { id: String(i + 1) },
+  }));
+}
+
 const chapterID = Number(Astro.params.id ?? 0);
 const chapter = await fetchChapter(chapterID);
 
