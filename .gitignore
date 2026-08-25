@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # QCF V4 page fonts — download with `pnpm data:fonts` (permission via #13)
 public/fonts/qcf-v4/
+
+# Python
+__pycache__/
+*.py[cod]
