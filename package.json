@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro preview",
-    "prebuild": "astro check && tsc --noEmit",
+    "prebuild": "astro check",
     "build": "astro build",
     "deploy": "pnpm build && wrangler pages deploy dist --project-name=qurescent",
+    "typecheck": "astro check",
     "data:ingest": "node scripts/ingest-quran-data.mjs",
     "data:fonts": "node scripts/download-qcf-fonts.mjs",
     "lint:eslint": "eslint . --ext .js,.ts,.astro",

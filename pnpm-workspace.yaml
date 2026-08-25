@@ -2,6 +2,10 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   workerd: true
+# Starlight 0.41 pulls satteri@0.9 while @astrojs/markdown-satteri wants 0.10 —
+# bare `tsc` then fails on Starlight's published .ts. Prefer one copy for runtime.
+overrides:
+  satteri: 0.10.5
 minimumReleaseAgeExclude:
   - '@astrojs/markdown-satteri@0.3.8'
   - astro@7.2.6
