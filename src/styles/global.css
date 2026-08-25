@@ -26,3 +26,11 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Reader UI sits inside Starlight; keep links looking like cards, not raw <a>s. */
+@layer components {
+  .quran-reader a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

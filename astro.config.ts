@@ -10,7 +10,8 @@ export default defineConfig({
     solidJS(),
     starlight({
       title: "Qurescent",
-      description: "Quran learning — tajwid, tadabbur, and lineage",
+      description:
+        "A documentation-style manual for the Quran — mushaf, tajwid, tadabbur, lineage.",
       customCss: ["./src/styles/global.css"],
       social: [
         {
@@ -21,8 +22,8 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: "Read",
-          link: "/",
+          label: "Mushaf",
+          link: "/read/",
         },
         {
           label: "Guide",

@@ -1,0 +1,87 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Verse from "@components/Verse";
+import TranslationStack, {
+  TranslationSettingsDrawer,
+} from "@components/TranslationStack";
+import { getChapter } from "@helpers/chapter";
+import {
+  getAllTranslationMaps,
+  getTranslationCatalog,
+} from "@helpers/translations";
+
+export function getStaticPaths() {
+  return Array.from({ length: 114 }, (_, i) => ({
+    params: { id: String(i + 1) },
+  }));
+}
+
+const chapterID = Number(Astro.params.id ?? 0);
+const chapter = getChapter(chapterID);
+
+if (!chapter) {
+  return Astro.redirect("/404");
+}
+
+const translationMaps = getAllTranslationMaps();
+const catalog = getTranslationCatalog();
+
+const verseTranslations = (verseKey: string) => {
+  const out: Record<string, string> = {};
+  for (const edition of catalog) {
+    const text = translationMaps[edition.id]?.[verseKey];
+    if (text) out[edition.id] = text;
+  }
+  return out;
+};
+---
+
+<StarlightPage
+  frontmatter={{
+    title: `Surah ${chapter.englishName}`,
+    description: `${chapter.englishName}: ${chapter.englishNameTranslation}`,
+    tableOfContents: false,
+    editUrl: false,
+  }}
+>
+  <div class="quran-reader not-content" dir="ltr">
+    <div class="mb-6 flex flex-row items-start justify-between gap-3">
+      <div>
+        <p class="text-sm text-(--sl-color-gray-3)">
+          {chapter.englishNameTranslation} · {chapter.totalVerse} ayahs
+        </p>
+        <p
+          class="font-surah-name mt-1 text-4xl text-(--sl-color-white)"
+          dir="rtl"
+        >
+          {chapter.id.toString().padStart(3, "0")}
+        </p>
+      </div>
+      <TranslationSettingsDrawer client:load />
+    </div>
+
+    {
+      chapter.id !== 1 && (
+        <div class="mb-8 flex justify-center">
+          <p class="font-hafs-uthmanic text-4xl text-(--sl-color-white)">
+            ﷽
+          </p>
+        </div>
+      )
+    }
+
+    <article dir="rtl" class="space-y-2">
+      {
+        chapter.verses.map((verse) => (
+          <>
+            <Verse verse={verse} client:visible />
+            <TranslationStack
+              translations={verseTranslations(verse.key)}
+              client:visible
+            />
+          </>
+        ))
+      }
+    </article>
+  </div>
+</StarlightPage>

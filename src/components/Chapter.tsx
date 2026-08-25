@@ -5,22 +5,24 @@ import type { IChapterMeta } from "_types/chapter";
 const Chapter: Component<{ chapter: IChapterMeta }> = (props) => {
   return (
     <a
-      href={`/chapter/${props.chapter.id}`}
-      class="flex h-36 w-36 flex-col rounded-md bg-gray-200 text-center transition duration-150 hover:bg-gray-100 dark:bg-container-300 dark:hover:bg-container-50"
+      href={`/read/${props.chapter.id}`}
+      class="flex h-36 flex-col rounded-lg border border-(--sl-color-gray-5) bg-(--sl-color-gray-6) text-center no-underline transition hover:border-(--sl-color-accent) hover:bg-(--sl-color-gray-5)"
     >
-      <div class="flex flex-row justify-between p-2 text-xs dark:text-slate-500">
+      <div class="flex flex-row justify-between p-2 text-xs text-(--sl-color-gray-3)">
         <span>{props.chapter.id}</span>
         <span>{props.chapter.totalVerse}</span>
       </div>
       <span
         dir="rtl"
-        class="text-center font-surah-name text-5xl text-slate-600 transition duration-150 dark:text-amber-300"
+        class="font-surah-name text-center text-5xl text-(--sl-color-accent-high)"
       >
         {props.chapter.id.toString().padStart(3, "0")}
       </span>
-      <h2 class="flex flex-col justify-center space-y-1 transition duration-150 dark:text-slate-300">
-        <strong>{props.chapter.englishName}</strong>
-        <span class="text-xs">{props.chapter.englishNameTranslation}</span>
+      <h2 class="flex flex-col justify-center space-y-1 text-(--sl-color-white)">
+        <strong class="font-sans text-sm">{props.chapter.englishName}</strong>
+        <span class="text-xs font-normal text-(--sl-color-gray-3)">
+          {props.chapter.englishNameTranslation}
+        </span>
       </h2>
     </a>
   );

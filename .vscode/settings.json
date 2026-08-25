@@ -1,3 +1,14 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.configFile": "src/styles/global.css",
+  "tailwindCSS.lint.suggestCanonicalClasses": "warning",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tailwindcss": "explicit"
+  }
 }
