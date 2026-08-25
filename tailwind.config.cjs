@@ -43,7 +43,11 @@ module.exports = {
       fontFamily: {
         "hafs-uthmanic": ["Hafs Uthmanic"],
         "surah-name": ["Surah Name"],
-        sans: ["InterVariable", "Inter", ...defaultTheme.fontFamily.sans],
+        sans: [
+          "Atkinson Hyperlegible",
+          ...defaultTheme.fontFamily.sans,
+        ],
+        serif: ["Crimson Pro", ...defaultTheme.fontFamily.serif],
       },
     },
   },

@@ -6,7 +6,7 @@ const Chapter: Component<{ chapter: IChapterMeta }> = (props) => {
   return (
     <a
       href={`/read/${props.chapter.id}`}
-      class="flex h-36 flex-col rounded-lg border border-(--sl-color-gray-5) bg-(--sl-color-gray-6) text-center no-underline transition hover:border-(--sl-color-accent) hover:bg-(--sl-color-gray-5)"
+      class="flex h-36 cursor-pointer flex-col rounded-lg border border-(--sl-color-gray-5) bg-(--sl-color-gray-6) text-center no-underline transition-colors duration-200 hover:border-(--sl-color-accent) hover:bg-(--sl-color-gray-5)"
     >
       <div class="flex flex-row justify-between p-2 text-xs text-(--sl-color-gray-3)">
         <span>{props.chapter.id}</span>

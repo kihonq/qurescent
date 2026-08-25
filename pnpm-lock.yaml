@@ -17,7 +17,10 @@ importers:
       '@astrojs/starlight-tailwind':
         specifier: ^5.0.0
         version: 5.0.0(@astrojs/starlight@0.41.8(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(astro@7.2.6(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(jiti@2.7.0)(sass@1.103.1)(yaml@2.9.0))(supports-color@7.2.0)(typescript@6.0.3))(tailwindcss@4.3.3)
-      '@fontsource/inter':
+      '@fontsource/atkinson-hyperlegible':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource/crimson-pro':
         specifier: ^5.3.0
         version: 5.3.0
       '@nanostores/solid':
@@ -660,8 +663,11 @@ packages:
   '@expressive-code/plugin-text-markers@0.44.1':
     resolution: {integrity: sha512-B3BsJoJ8CFMlcIX9f+X9tcI3C4zPDO601+YuLi9GheSTNro7ZfqSjLptMQKBHOWZvxnAtY5zvIX7iO/qtBhNBg==}
 
-  '@fontsource/inter@5.3.0':
-    resolution: {integrity: sha512-RofMylZmjlJEfELXeNHFWBRcSs75rGU/6bV2S2jfnvv/3rPXPGe0LgUJTklcHZ9lM4OZmAVFhcJPnACfb91A3g==}
+  '@fontsource/atkinson-hyperlegible@5.3.0':
+    resolution: {integrity: sha512-Sp8Ve8+rQmENY2Lv02VH7sLpntzTTvnncnJMTbRE7DX6TLxGraN4ykZfzaUWIoCFmaomwkvNiqmlPkrKBuDoSA==}
+
+  '@fontsource/crimson-pro@5.3.0':
+    resolution: {integrity: sha512-PXQH0NGma2wwskZAySBH+s/ezAYBwyDH0I4oRURBu9u81nNUCm5DcNCJaUS9H0UR1y8qlslLfVRU6mnDBpffrA==}
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -4961,7 +4967,9 @@ snapshots:
     dependencies:
       '@expressive-code/core': 0.44.1
 
-  '@fontsource/inter@5.3.0': {}
+  '@fontsource/atkinson-hyperlegible@5.3.0': {}
+
+  '@fontsource/crimson-pro@5.3.0': {}
 
   '@humanwhocodes/config-array@0.13.0(supports-color@7.2.0)':
     dependencies:
