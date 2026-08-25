@@ -4,3 +4,4 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - '@astrojs/markdown-satteri@0.3.8'
   - astro@7.2.6
+  - '@astrojs/starlight@0.41.8'

@@ -6,6 +6,7 @@ import TranslationStack, {
 import Layout from "@layouts/Layout.astro";
 import { getChapter } from "@helpers/chapter";
 import { getAllTranslationMaps } from "@helpers/translations";
+import { getTranslationCatalog } from "@helpers/translations";
 
 export function getStaticPaths() {
   return Array.from({ length: 114 }, (_, i) => ({
@@ -20,7 +21,17 @@ if (!chapter) {
   return Astro.redirect("/404");
 }
 
-const translations = getAllTranslationMaps();
+const translationMaps = getAllTranslationMaps();
+const catalog = getTranslationCatalog();
+
+const verseTranslations = (verseKey: string) => {
+  const out: Record<string, string> = {};
+  for (const edition of catalog) {
+    const text = translationMaps[edition.id]?.[verseKey];
+    if (text) out[edition.id] = text;
+  }
+  return out;
+};
 ---
 
 <Layout
@@ -63,9 +74,8 @@ const translations = getAllTranslationMaps();
             <>
               <Verse verse={verse} client:visible />
               <TranslationStack
-                verseKey={verse.key}
-                translations={translations}
-                client:load
+                translations={verseTranslations(verse.key)}
+                client:visible
               />
             </>
           ))

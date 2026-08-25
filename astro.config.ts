@@ -1,15 +1,47 @@
 import { defineConfig } from "astro/config";
-
-// https://astro.build/config
 import solidJS from "@astrojs/solid-js";
-
-// https://astro.build/config
+import starlight from "@astrojs/starlight";
 import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
   output: "static",
-  integrations: [solidJS()],
+  integrations: [
+    solidJS(),
+    starlight({
+      title: "Qurescent",
+      description: "Quran learning — tajwid, tadabbur, and lineage",
+      customCss: ["./src/styles/global.css"],
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/kihonq/qurescent",
+        },
+      ],
+      sidebar: [
+        {
+          label: "Read",
+          link: "/",
+        },
+        {
+          label: "Guide",
+          items: [
+            { label: "Overview", slug: "guide" },
+            {
+              label: "Tajwid",
+              items: [
+                { label: "Overview", slug: "guide/tajwid" },
+                { label: "Color legend", slug: "guide/tajwid/color-legend" },
+              ],
+            },
+            { label: "Tadabbur", slug: "guide/tadabbur" },
+            { label: "Lineage & history", slug: "guide/lineage" },
+          ],
+        },
+      ],
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

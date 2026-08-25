@@ -31,13 +31,19 @@ const Header: Component = () => {
 
   return (
     <div class="sticky top-0 z-30 flex w-full items-center bg-white/30 py-6 px-8 backdrop-blur-md transition duration-150 dark:bg-neutral-900/50">
-      <div class="flex flex-1 items-center">
+      <div class="flex flex-1 items-center gap-6">
         <IconLogo />
         <a
           href="/"
           class="ml-1 text-2xl font-bold transition duration-150 dark:text-slate-200"
         >
           Qurescent
+        </a>
+        <a
+          href="/guide/"
+          class="text-sm font-medium text-gray-600 transition duration-150 hover:text-gray-900 dark:text-slate-400 dark:hover:text-slate-200"
+        >
+          Guide
         </a>
       </div>
       <div class="h-6 w-12">

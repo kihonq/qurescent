@@ -48,9 +48,11 @@ export const TranslationSettingsDrawer: Component = () => {
   );
 };
 
+/** Per-verse texts keyed by edition id (e.g. `en.sahih`). */
+export type VerseTranslations = Record<string, string>;
+
 const TranslationStack: Component<{
-  verseKey: string;
-  translations: Record<string, Record<string, string>>;
+  translations: VerseTranslations;
 }> = (props) => {
   const enabled = useStore(enabledTranslationsAtom);
 
@@ -58,7 +60,7 @@ const TranslationStack: Component<{
     <div class="mt-1 mb-4 max-w-2xl space-y-1.5 text-left" dir="ltr">
       <For each={translationCatalog.filter((t) => enabled().includes(t.code))}>
         {(t) => {
-          const text = () => props.translations[t.id]?.[props.verseKey] ?? "";
+          const text = () => props.translations[t.id] ?? "";
           return (
             <Show when={text()}>
               <p class="text-sm text-gray-600 dark:text-slate-400">
