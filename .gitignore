@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# QCF V4 page fonts — download with `pnpm data:fonts` (permission via #13)
+public/fonts/qcf-v4/

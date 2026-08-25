@@ -3,9 +3,9 @@ import Fuse from "fuse.js";
 import Chapter from "@components/Chapter";
 import Layout from "@layouts/Layout.astro";
 
-import { fetchChapters } from "@helpers/chapter";
+import { getChapters } from "@helpers/chapter";
 
-let chapters = await fetchChapters();
+let chapters = getChapters();
 
 const q = Astro.url.searchParams.get("q")?.toLowerCase();
 

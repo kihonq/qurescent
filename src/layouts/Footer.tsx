@@ -47,6 +47,14 @@ const Footer = () => {
             >
               SolidJS
             </a>
+            . Tajweed font courtesy of{" "}
+            <a
+              href="https://qul.tarteel.ai"
+              class="transition duration-150 hover:text-gray-700 dark:hover:text-amber-300"
+            >
+              QUL / qul.tarteel.ai
+            </a>
+            .
           </div>
         </div>
 

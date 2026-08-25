@@ -1,8 +1,8 @@
 import type { Component } from "solid-js";
 
-import type { IChapter } from "_types/chapter";
+import type { IChapterMeta } from "_types/chapter";
 
-const Chapter: Component<{ chapter: IChapter }> = (props) => {
+const Chapter: Component<{ chapter: IChapterMeta }> = (props) => {
   return (
     <a
       href={`/chapter/${props.chapter.id}`}

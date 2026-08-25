@@ -8,6 +8,8 @@
     "start": "astro preview",
     "prebuild": "astro check && tsc --noEmit",
     "build": "astro build",
+    "data:ingest": "node scripts/ingest-quran-data.mjs",
+    "data:fonts": "node scripts/download-qcf-fonts.mjs",
     "lint:eslint": "eslint . --ext .js,.ts,.astro",
     "lint:prettier": "prettier --write --plugin-search-dir=. ."
   },

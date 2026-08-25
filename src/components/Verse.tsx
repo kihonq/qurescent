@@ -1,107 +1,127 @@
-import { For, Show } from "solid-js";
-import type { Component, JSX } from "solid-js";
+import { For, Show, createSignal, onMount } from "solid-js";
+import type { Component } from "solid-js";
 
-import type { IChapterVerse } from "_types/chapter";
-import { Tajweed, TAJWEED_META } from "_types/verse";
-import { wordsSplitter } from "@helpers/verse";
+import type { IVerse, IWord } from "_types/chapter";
+import { loadQcfPageFonts, qcfFontFamily, type QcfTheme } from "@helpers/qcfFont";
+import { Theme, themeAtom } from "@stores/theme";
+import { useStore } from "@nanostores/solid";
 
-const Verse: Component<{ verse: IChapterVerse }> = (props) => {
-  let rawVerse = props.verse.text.replace(
-    /(?<![\u0627\u0623\u0625\u0648])[\u0652](?![\u0627\u0623\u0625\u0648])/g,
-    "\u06E1"
-  );
-  const tajweedRegex =
-    /<tajweed class=(.*?)>(.*?)<\/tajweed>|<span class=(.*?)>(.*?)<\/span>/g;
+const isWord = (w: IWord) => w.charType === "word";
 
-  const matches = rawVerse.match(tajweedRegex) ?? [];
-  const tuples: [index: number, element: JSX.Element][] = [];
+const Verse: Component<{ verse: IVerse }> = (props) => {
+  const theme = useStore(themeAtom);
+  const [fontsReady, setFontsReady] = createSignal(false);
+  const [copied, setCopied] = createSignal(false);
 
-  for (let i = 0; i < matches.length; i++) {
-    const match = matches[i];
-    const isEnd = match.replace(tajweedRegex, "$3") === "end";
-    const start = rawVerse.indexOf(match);
-    if (isEnd) {
-      tuples.push([
-        start,
-        <span class="text-slate-600 transition duration-150 dark:text-amber-300">
-          {match.replace(tajweedRegex, "$4")}
-        </span>,
-      ]);
-    } else {
-      const tajweed = match.replace(tajweedRegex, "$1") as Tajweed;
-      const meta = TAJWEED_META[tajweed];
-      const chars = match.replace(tajweedRegex, "$2");
+  const words = () => props.verse.words;
+  const contentWords = () => words().filter(isWord);
+  const pageNumbers = () => words().map((w) => w.pageNumber);
 
-      if (chars.indexOf(" ") !== -1) {
-        const charMatches = chars.match(/\S+|\s/g) ?? [];
-        tuples.push([
-          start,
-          charMatches.map((charMatch) =>
-            charMatch === " " ? (
-              " "
-            ) : (
-              <span class={meta.class}>
-                {charMatch.replace(/((?<=َ)ٲ|(?<!َ)ٲ)/g, "ٰ")}
-              </span>
-            )
-          ),
-        ]);
-      } else {
-        tuples.push([
-          start,
-          <span class={meta.class}>
-            {chars.replace(/((?<=َ)ٲ|(?<!َ)ٲ)/g, "ٰ")}
-          </span>,
-        ]);
-      }
+  const plainText = () =>
+    contentWords()
+      .map((w) => w.textUthmani)
+      .join(" ");
+
+  const diacritizedText = () =>
+    contentWords()
+      .map((w) => w.textQpcHafs || w.textUthmani)
+      .join(" ");
+
+  const qcfTheme = (): QcfTheme =>
+    theme() === Theme.Dark ? "dark" : "light";
+
+  onMount(() => {
+    void loadQcfPageFonts(pageNumbers(), qcfTheme()).then(() =>
+      setFontsReady(true),
+    );
+  });
+
+  const copyVerse = async () => {
+    const text = `${diacritizedText()} (${props.verse.key})`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Clipboard may be denied; ignore.
     }
-    rawVerse = rawVerse.replace(match, "");
-  }
-
-  const result: JSX.Element[] = [];
-
-  let i = 0;
-  for (const tuple of tuples) {
-    const [start, element] = tuple;
-    result.push(rawVerse.slice(i, start));
-    result.push(element);
-    i = start;
-  }
-
-  result.push(rawVerse.slice(i));
-
-  const kalimat: JSX.Element[][] = wordsSplitter(result);
+  };
 
   return (
-    <p class="flex flex-row flex-wrap">
-      <For each={kalimat}>
-        {(kalima, i) => {
-          const word = props.verse.words.find((w) => w.position === i() + 1);
+    <div class="mb-6" dir="rtl">
+      {/* Screen-reader / SEO / copy source — real Unicode Arabic */}
+      <div class="sr-only" aria-label={`Ayah ${props.verse.number}`}>
+        <div>{plainText()}</div>
+        <div>{diacritizedText()}</div>
+      </div>
 
-          return (
-            <span class="group relative flex flex-col items-center">
-              <span class="block whitespace-nowrap font-hafs-uthmanic text-4xl md:text-5xl">
-                {kalima}
-              </span>
-              <span>
-                <Show when={word} keyed>
-                  {(notNull) =>
-                    i() !== kalimat.length - 1 && [
-                      <span dir="ltr" class="text-center text-xs ">
-                        {notNull.translation.text}
-                      </span>,
-                      <span class="absolute left-1/2 m-4 mx-auto -translate-x-1/2 translate-y-5 whitespace-nowrap rounded-md bg-gray-800 px-1 text-sm text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
-                        {notNull.transliteration.text}
-                      </span>,
-                    ]
+      <p
+        class="flex flex-row flex-wrap items-end justify-start gap-x-1"
+        aria-hidden="true"
+      >
+        <For each={words()}>
+          {(word) => {
+            if (word.charType === "end") {
+              return (
+                <span class="mx-1 inline-flex flex-col items-center font-hafs-uthmanic text-2xl text-amber-600 dark:text-amber-300 md:text-3xl">
+                  {word.textQpcHafs || word.textUthmani || "۝"}
+                </span>
+              );
+            }
+
+            if (!isWord(word)) return null;
+
+            return (
+              <span class="group relative flex flex-col items-center px-0.5">
+                <span
+                  class="block whitespace-nowrap text-4xl leading-relaxed md:text-5xl"
+                  style={
+                    fontsReady()
+                      ? { "font-family": qcfFontFamily(word.pageNumber) }
+                      : undefined
                   }
+                  classList={{
+                    "font-hafs-uthmanic opacity-70": !fontsReady(),
+                  }}
+                  // Glyph codes must be set as HTML (QF docs); Solid's text
+                  // children go through textContent. Use innerHTML via prop.
+                  // eslint-disable-next-line solid/no-innerhtml
+                  innerHTML={
+                    fontsReady()
+                      ? word.codeV2
+                      : word.textQpcHafs || word.textUthmani
+                  }
+                />
+                <Show when={word.translation}>
+                  <span
+                    dir="ltr"
+                    class="mt-0.5 text-center text-xs text-gray-500 dark:text-slate-400"
+                  >
+                    {word.translation}
+                  </span>
+                </Show>
+                <Show when={word.transliteration}>
+                  <span class="pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-1.5 py-0.5 text-xs text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
+                    {word.transliteration}
+                  </span>
                 </Show>
               </span>
-            </span>
-          );
-        }}
-      </For>
-    </p>
+            );
+          }}
+        </For>
+      </p>
+
+      <div class="mt-1 flex justify-end" dir="ltr">
+        <button
+          type="button"
+          onClick={copyVerse}
+          class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-slate-300"
+          aria-label={`Copy ayah ${props.verse.key}`}
+        >
+          {copied() ? "Copied" : "Copy"}
+        </button>
+      </div>
+    </div>
   );
 };
 
