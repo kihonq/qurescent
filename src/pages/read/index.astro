@@ -1,0 +1,56 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Fuse from "fuse.js";
+import Chapter from "@components/Chapter";
+import { getChapters } from "@helpers/chapter";
+
+let chapters = getChapters();
+
+const q = Astro.url.searchParams.get("q")?.toLowerCase();
+
+if (q) {
+  const fuse = new Fuse(chapters, {
+    threshold: 0.2,
+    keys: ["id", "name", "englishName", "englishNameTranslation"],
+  });
+  const fused = fuse.search(q);
+  chapters = fused.map(({ item }) => item);
+}
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Mushaf",
+    description: "114 surahs — QCF V4 tajwid, optional word-by-word and translations.",
+    tableOfContents: false,
+    editUrl: false,
+  }}
+>
+  <div class="quran-reader not-content">
+    <form class="mb-5">
+      <label class="sr-only" for="surah-filter">
+        Filter surahs
+      </label>
+      <input
+        id="surah-filter"
+        type="search"
+        placeholder="Filter by name or number…"
+        name="q"
+        value={q ?? ""}
+        class="w-full border border-(--sl-color-gray-5) bg-transparent px-3 py-2.5 text-sm text-(--sl-color-white) placeholder:text-(--sl-color-gray-3) transition-colors duration-200 focus:border-(--sl-color-accent) focus:outline-none focus:ring-2 focus:ring-(--sl-color-accent)"
+      />
+    </form>
+
+    {
+      !chapters.length ? (
+        <p class="text-(--sl-color-gray-2)">No surah matches that filter.</p>
+      ) : (
+        <div class="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-4">
+          {chapters.map((chapter) => (
+            <Chapter chapter={chapter} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</StarlightPage>

@@ -1,0 +1,42 @@
+---
+title: Qurescent
+head:
+  - tag: title
+    content: Qurescent — Quran from an engineer lens
+description: Static techdoc for the Quran — mushaf with QCF V4 tajwid, source-marked guides, zero runtime APIs.
+template: splash
+editUrl: false
+lastUpdated: false
+hero:
+  title: Qurescent
+  tagline: Learn the Quran the way an engineer reads a system — fixed text, named sources, certainty marked. Static build. No ads.
+  actions:
+    - text: Open mushaf
+      link: /read/
+      icon: right-arrow
+      variant: primary
+    - text: Read the guide
+      link: /guide/
+      icon: open-book
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+  <Card title="Mushaf" icon="document">
+    Madani text with QCF V4 tajweed glyphs, optional word-by-word glosses, and a
+    translation stack you can empty. Sidebar → **Mushaf**.
+  </Card>
+  <Card title="Tajwid" icon="pencil">
+    Color rules mapped to Dar Al-Maarifah / Al-Azhar legend — not CSS overlays
+    guessed after the fact.
+  </Card>
+  <Card title="Tadabbur" icon="approve-check">
+    Short reflections for contemplation. Not a tafsir dump.
+  </Card>
+  <Card title="Lineage & history" icon="information">
+    Nasab and revelation chronology with confirmed vs traditionally reported
+    edges drawn explicitly.
+  </Card>
+</CardGrid>

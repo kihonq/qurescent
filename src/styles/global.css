@@ -1,0 +1,129 @@
+@layer base, starlight, theme, components, utilities;
+
+@import "@astrojs/starlight-tailwind";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@import "@fontsource/atkinson-hyperlegible/400.css";
+@import "@fontsource/atkinson-hyperlegible/700.css";
+@import "@fontsource/crimson-pro/500.css";
+@import "@fontsource/crimson-pro/600.css";
+@import "@fontsource/crimson-pro/700.css";
+
+@config "../../tailwind.config.cjs";
+
+/* Theme baseline — #15 / design-system/qurescent/MASTER.md */
+@theme {
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
+
+  /* Accent: teal (not Starlight indigo / purple) */
+  --color-accent-50: var(--color-teal-50);
+  --color-accent-100: var(--color-teal-100);
+  --color-accent-200: var(--color-teal-200);
+  --color-accent-300: var(--color-teal-300);
+  --color-accent-400: var(--color-teal-400);
+  --color-accent-500: var(--color-teal-500);
+  --color-accent-600: var(--color-teal-600);
+  --color-accent-700: var(--color-teal-700);
+  --color-accent-800: var(--color-teal-800);
+  --color-accent-900: var(--color-teal-900);
+  --color-accent-950: var(--color-teal-950);
+
+  /* Neutrals: slate for scholarly contrast */
+  --color-gray-50: var(--color-slate-50);
+  --color-gray-100: var(--color-slate-100);
+  --color-gray-200: var(--color-slate-200);
+  --color-gray-300: var(--color-slate-300);
+  --color-gray-400: var(--color-slate-400);
+  --color-gray-500: var(--color-slate-500);
+  --color-gray-600: var(--color-slate-600);
+  --color-gray-700: var(--color-slate-700);
+  --color-gray-800: var(--color-slate-800);
+  --color-gray-900: var(--color-slate-900);
+  --color-gray-950: var(--color-slate-950);
+}
+
+@font-face {
+  font-family: "Hafs Uthmanic";
+  src:
+    local("KFGQPC HAFS Uthmanic Script Regular"),
+    url("/fonts/hafs-uthmanic.woff2") format("woff2"),
+    url("/fonts/hafs-uthmanic.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Surah Name";
+  src:
+    local("sura_names"),
+    url("/fonts/surah-name.woff2") format("woff2"),
+    url("/fonts/surah-name.woff") format("woff"),
+    url("/fonts/surah-name.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --sl-font: "Atkinson Hyperlegible", var(--sl-font-system);
+  }
+
+  /* Scholarly headings; body stays Atkinson via --sl-font */
+  .sl-markdown-content :is(h1, h2, h3, h4),
+  .hero h1,
+  [data-has-hero] .hero .sl-heading-wrapper h1,
+  .content-panel h1#_top {
+    font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Soft teal wash on splash only — no purple overlay, no inset hero card */
+@layer components {
+  [data-has-hero] .page {
+    background:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        color-mix(in oklab, var(--sl-color-accent-low) 55%, transparent),
+        transparent 70%
+      ),
+      var(--sl-color-bg);
+  }
+
+  [data-has-hero] header {
+    border-bottom-color: transparent;
+    background-color: color-mix(in oklab, var(--sl-color-bg) 80%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .quran-reader a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .quran-reader a:focus-visible {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Reader: keep mushaf plane quiet; chrome is border + type only */
+  .quran-reader {
+    --qr-verse-gap: 2rem;
+  }
+}

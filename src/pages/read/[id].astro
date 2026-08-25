@@ -1,0 +1,75 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import ChapterReader from "@components/ChapterReader";
+import { getChapter } from "@helpers/chapter";
+import {
+  getAllTranslationMaps,
+  getTranslationCatalog,
+} from "@helpers/translations";
+
+export function getStaticPaths() {
+  return Array.from({ length: 114 }, (_, i) => ({
+    params: { id: String(i + 1) },
+  }));
+}
+
+const chapterID = Number(Astro.params.id ?? 0);
+const chapter = getChapter(chapterID);
+
+if (!chapter) {
+  return Astro.redirect("/404");
+}
+
+const translationMaps = getAllTranslationMaps();
+const catalog = getTranslationCatalog();
+
+const translationsByVerse: Record<string, Record<string, string>> = {};
+const pageNumbers = new Set<number>();
+for (const verse of chapter.verses) {
+  const out: Record<string, string> = {};
+  for (const edition of catalog) {
+    const text = translationMaps[edition.id]?.[verse.key];
+    if (text) out[edition.id] = text;
+  }
+  translationsByVerse[verse.key] = out;
+  for (const word of verse.words) pageNumbers.add(word.pageNumber);
+}
+---
+
+{
+  /* Hoisted to <head> — start QCF fetch before the island hydrates. */
+  [...pageNumbers].map((page) => (
+    <link
+      rel="preload"
+      href={`/fonts/qcf-v4/colrv1/p${page}.woff2`}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+  ))
+}
+
+<StarlightPage
+  frontmatter={{
+    title: `Surah ${chapter.englishName}`,
+    description: `${chapter.englishName}: ${chapter.englishNameTranslation}`,
+    tableOfContents: false,
+    editUrl: false,
+  }}
+>
+  <ChapterReader
+    client:load
+    chapter={chapter}
+    translationsByVerse={translationsByVerse}
+  />
+</StarlightPage>
+
+<style is:global>
+  /* Drop Starlight’s title ContentPanel — reader chrome owns the header. */
+  main > .content-panel:has(#_top) {
+    display: none;
+  }
+  main > .content-panel:has(#_top) + .content-panel {
+    border-top: none;
+  }
+</style>

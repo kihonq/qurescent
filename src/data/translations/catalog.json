@@ -1,0 +1,14 @@
+[
+  {
+    "id": "en.sahih",
+    "code": "en",
+    "language": "English",
+    "editionName": "Saheeh International"
+  },
+  {
+    "id": "ms.basmeih",
+    "code": "ms",
+    "language": "Bahasa Melayu",
+    "editionName": "Abdullah Basmeih"
+  }
+]

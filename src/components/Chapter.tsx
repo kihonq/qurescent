@@ -1,29 +1,29 @@
-import type { Component } from "solid-js";
+import type { IChapterMeta } from "_types/chapter";
 
-import type { IChapter } from "_types/chapter";
-
-const Chapter: Component<{ chapter: IChapter }> = (props) => {
+export default function Chapter({ chapter }: { chapter: IChapterMeta }) {
   return (
     <a
-      href={`/chapter/${props.chapter.id}`}
-      class="flex h-36 w-36 flex-col rounded-md bg-gray-200 text-center transition duration-150 hover:bg-gray-100 dark:bg-container-300 dark:hover:bg-container-50"
+      href={`/read/${chapter.id}`}
+      className="flex h-32 cursor-pointer flex-col border border-(--sl-color-gray-5) bg-transparent text-center no-underline transition-colors duration-200 hover:border-(--sl-color-accent) hover:bg-(--sl-color-gray-6)/40"
     >
-      <div class="flex flex-row justify-between p-2 text-xs dark:text-slate-500">
-        <span>{props.chapter.id}</span>
-        <span>{props.chapter.totalVerse}</span>
+      <div className="flex flex-row justify-between px-2.5 pt-2 text-[11px] tabular-nums text-(--sl-color-gray-2)">
+        <span>{chapter.id}</span>
+        <span>{chapter.totalVerse}</span>
       </div>
       <span
         dir="rtl"
-        class="text-center font-surah-name text-5xl text-slate-600 transition duration-150 dark:text-amber-300"
+        className="font-surah-name mt-0.5 text-center text-4xl text-(--sl-color-accent-high) md:text-5xl"
       >
-        {props.chapter.id.toString().padStart(3, "0")}
+        {chapter.id.toString().padStart(3, "0")}
       </span>
-      <h2 class="flex flex-col justify-center space-y-1 transition duration-150 dark:text-slate-300">
-        <strong>{props.chapter.englishName}</strong>
-        <span class="text-xs">{props.chapter.englishNameTranslation}</span>
+      <h2 className="mt-auto flex flex-col justify-end gap-0.5 px-2 pb-2.5 text-(--sl-color-white)">
+        <strong className="font-sans text-sm font-medium tracking-tight">
+          {chapter.englishName}
+        </strong>
+        <span className="text-[11px] font-normal leading-snug text-(--sl-color-gray-2)">
+          {chapter.englishNameTranslation}
+        </span>
       </h2>
     </a>
   );
-};
-
-export default Chapter;
+}

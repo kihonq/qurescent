@@ -1,6 +1,7 @@
 # build output
 dist/
 .output/
+.astro/
 
 # dependencies
 node_modules/
@@ -21,3 +22,10 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# QCF V4 page fonts — download with `bun run data:fonts` (permission via #13; deploy notes in SOURCES.md)
+public/fonts/qcf-v4/
+
+# Python
+__pycache__/
+*.py[cod]

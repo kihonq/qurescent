@@ -1,51 +1,38 @@
-export interface IChapterVerseWord {
-  id: number;
+export interface IWord {
   position: number;
-  audio_url: string;
-  char_type_name: string;
-  line_number: number;
-  page_number: number;
-  code_v1: string;
-  translation: {
-    text: string;
-    language_name: string;
-  };
-  transliteration: {
-    text: string;
-    language_name: string;
-  };
+  charType: string;
+  codeV2: string;
+  textUthmani: string;
+  textQpcHafs: string;
+  pageNumber: number;
+  lineNumber: number | null;
+  translation: string;
+  transliteration: string;
 }
 
-export interface IChapterVerse {
+export interface IVerse {
   number: number;
-  text: string;
-  numberInSurah: number;
-  juz: number;
-  manzil: number;
-  page: number;
-  ruku: number;
-  hizbQuarter: number;
-  sajda: boolean;
-  words: IChapterVerseWord[];
+  key: string;
+  pageNumber: number;
+  words: IWord[];
 }
 
-interface IEdition {
-  identifier: string;
-  language: string;
-  name: string;
-  englishName: string;
-  format: string;
-  type: string;
-  direction: string;
-}
-
-export interface IChapter {
+export interface IChapterMeta {
   id: number;
   name: string;
   englishName: string;
   englishNameTranslation: string;
   revelationType: string;
   totalVerse: number;
-  verses: IChapterVerse[];
-  edition: IEdition;
+}
+
+export interface IChapter extends IChapterMeta {
+  verses: IVerse[];
+}
+
+export interface ITranslationEdition {
+  id: string;
+  code: string;
+  language: string;
+  editionName: string;
 }
