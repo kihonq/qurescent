@@ -1,128 +1,198 @@
-import { For, Show, createSignal, onMount } from "solid-js";
-import type { Component } from "solid-js";
+import type { CSSProperties, ReactNode } from "react";
+import { useStore } from "@nanostores/react";
 
 import type { IVerse, IWord } from "_types/chapter";
-import { loadQcfPageFonts, qcfFontFamily, type QcfTheme } from "@helpers/qcfFont";
-import { Theme, themeAtom } from "@stores/theme";
-import { useStore } from "@nanostores/solid";
+import {
+  qcfFontFamily,
+  qcfFontPalette,
+  type QcfTheme,
+} from "@helpers/qcfFont";
+import { useHydrated } from "@hooks/useHydrated";
+import { coloredTajweedAtom, wordByWordAtom } from "@stores/readerPrefs";
 
 const isWord = (w: IWord) => w.charType === "word";
 
-const Verse: Component<{ verse: IVerse }> = (props) => {
-  const theme = useStore(themeAtom);
-  const [fontsReady, setFontsReady] = createSignal(false);
-  const [copied, setCopied] = createSignal(false);
+/** Mushaf-style leading — QF / Quran.com reading view uses ~2.5 for Arabic. */
+const ARABIC_LEADING =
+  "text-4xl leading-[2.45] md:text-5xl md:leading-[2.5]";
 
-  const words = () => props.verse.words;
-  const contentWords = () => words().filter(isWord);
-  const pageNumbers = () => words().map((w) => w.pageNumber);
+type Props = {
+  verse: IVerse;
+  fontsReady: boolean;
+  theme: QcfTheme;
+};
 
-  const plainText = () =>
-    contentWords()
-      .map((w) => w.textUthmani)
-      .join(" ");
-
-  const diacritizedText = () =>
-    contentWords()
-      .map((w) => w.textQpcHafs || w.textUthmani)
-      .join(" ");
-
-  const qcfTheme = (): QcfTheme =>
-    theme() === Theme.Dark ? "dark" : "light";
-
-  onMount(() => {
-    void loadQcfPageFonts(pageNumbers(), qcfTheme()).then(() =>
-      setFontsReady(true),
-    );
-  });
-
-  const copyVerse = async () => {
-    const text = `${diacritizedText()} (${props.verse.key})`;
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      // Clipboard may be denied; ignore.
-    }
+function qcfStyle(
+  pageNumber: number,
+  fontsReady: boolean,
+  theme: QcfTheme,
+  showTajweed: boolean,
+): CSSProperties | undefined {
+  if (!fontsReady) return undefined;
+  return {
+    fontFamily: qcfFontFamily(pageNumber),
+    fontPalette: qcfFontPalette(
+      pageNumber,
+      theme,
+      showTajweed,
+    ) as CSSProperties["fontPalette"],
   };
+}
+
+function WordGlyph({
+  word,
+  fontsReady,
+  theme,
+  showTajweed,
+}: {
+  word: IWord;
+  fontsReady: boolean;
+  theme: QcfTheme;
+  showTajweed: boolean;
+}) {
+  const style = qcfStyle(word.pageNumber, fontsReady, theme, showTajweed);
+
+  if (fontsReady) {
+    return (
+      <span
+        className="whitespace-nowrap"
+        style={style}
+        dangerouslySetInnerHTML={{ __html: word.codeV2 }}
+      />
+    );
+  }
 
   return (
-    <div class="mb-6" dir="rtl">
-      {/* Screen-reader / SEO / copy source — real Unicode Arabic */}
-      <div class="sr-only" aria-label={`Ayah ${props.verse.number}`}>
-        <div>{plainText()}</div>
-        <div>{diacritizedText()}</div>
+    <span className="inline-block w-[1.25em]" aria-hidden="true">
+      &nbsp;
+    </span>
+  );
+}
+
+/**
+ * Ayah end mark — same QCF glyph/metrics as the last word (`code_v2`).
+ * Always uses the *colored* theme palette: mono bases flatten numeral + casing
+ * to one ink, so the digit disappears inside the ornament.
+ */
+function AyahMark({
+  end,
+  fontsReady,
+  theme,
+}: {
+  end: IWord;
+  fontsReady: boolean;
+  theme: QcfTheme;
+}) {
+  const style = qcfStyle(end.pageNumber, fontsReady, theme, true);
+
+  if (fontsReady) {
+    return (
+      <span
+        className="shrink-0 whitespace-nowrap"
+        style={style}
+        dangerouslySetInnerHTML={{ __html: end.codeV2 }}
+      />
+    );
+  }
+
+  return (
+    <span className="inline-block w-[1em] shrink-0" aria-hidden="true">
+      &nbsp;
+    </span>
+  );
+}
+
+function WordColumn({
+  word,
+  fontsReady,
+  theme,
+  showTajweed,
+  wbw,
+  end,
+}: {
+  word: IWord;
+  fontsReady: boolean;
+  theme: QcfTheme;
+  showTajweed: boolean;
+  wbw: boolean;
+  end?: IWord;
+}) {
+  return (
+    <span className="inline-flex flex-col items-center px-0.5">
+      {/* One Arabic line box: last word + end mark share metrics / vertical center */}
+      <span
+        className={`inline-flex flex-row flex-nowrap items-center gap-x-1 whitespace-nowrap ${ARABIC_LEADING}`}
+      >
+        <WordGlyph
+          word={word}
+          fontsReady={fontsReady}
+          theme={theme}
+          showTajweed={showTajweed}
+        />
+        {end ? (
+          <AyahMark end={end} fontsReady={fontsReady} theme={theme} />
+        ) : null}
+      </span>
+      {wbw && word.translation ? (
+        <span
+          dir="ltr"
+          className="mt-1 text-center text-xs leading-snug text-(--sl-color-gray-2)"
+        >
+          {word.translation}
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
+/** Presentational ayah row — fonts/theme owned by ChapterReader. */
+export default function Verse({ verse, fontsReady, theme }: Props) {
+  const hydrated = useHydrated();
+  const showWbw = useStore(wordByWordAtom);
+  const showTajweed = useStore(coloredTajweedAtom);
+  const wbw = hydrated && showWbw;
+
+  const words = verse.words;
+  const contentWords = words.filter(isWord);
+  const plainText = contentWords.map((w) => w.textUthmani).join(" ");
+  const diacritizedText = contentWords
+    .map((w) => w.textQpcHafs || w.textUthmani)
+    .join(" ");
+
+  const nodes: ReactNode[] = [];
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    if (!isWord(word)) continue;
+
+    const end = words[i + 1]?.charType === "end" ? words[i + 1] : undefined;
+    if (end) i += 1; // consume end so it never wraps alone
+
+    nodes.push(
+      <WordColumn
+        key={`${word.position}-${i}`}
+        word={word}
+        fontsReady={fontsReady}
+        theme={theme}
+        showTajweed={showTajweed}
+        wbw={wbw}
+        end={end}
+      />,
+    );
+  }
+
+  return (
+    <div className="mb-10" dir="rtl">
+      <div className="sr-only" aria-label={`Ayah ${verse.number}`}>
+        <div>{plainText}</div>
+        <div>{diacritizedText}</div>
       </div>
 
       <p
-        class="flex flex-row flex-wrap items-end justify-start gap-x-1"
+        className="flex flex-row flex-wrap items-start justify-start gap-x-1.5 gap-y-6 md:gap-y-8"
         aria-hidden="true"
       >
-        <For each={words()}>
-          {(word) => {
-            if (word.charType === "end") {
-              return (
-                <span class="mx-1 inline-flex flex-col items-center font-hafs-uthmanic text-2xl text-amber-600 dark:text-amber-300 md:text-3xl">
-                  {word.textQpcHafs || word.textUthmani || "۝"}
-                </span>
-              );
-            }
-
-            if (!isWord(word)) return null;
-
-            return (
-              <span class="group relative flex flex-col items-center px-0.5">
-                <span
-                  class="block whitespace-nowrap text-4xl leading-relaxed md:text-5xl"
-                  style={
-                    fontsReady()
-                      ? { "font-family": qcfFontFamily(word.pageNumber) }
-                      : undefined
-                  }
-                  classList={{
-                    "font-hafs-uthmanic opacity-70": !fontsReady(),
-                  }}
-                  // Glyph codes must be set as HTML (QF docs); Solid's text
-                  // children go through textContent. Use innerHTML via prop.
-                  // eslint-disable-next-line solid/no-innerhtml
-                  innerHTML={
-                    fontsReady()
-                      ? word.codeV2
-                      : word.textQpcHafs || word.textUthmani
-                  }
-                />
-                <Show when={word.translation}>
-                  <span
-                    dir="ltr"
-                    class="mt-0.5 text-center text-xs text-(--sl-color-gray-2)"
-                  >
-                    {word.translation}
-                  </span>
-                </Show>
-                <Show when={word.transliteration}>
-                  <span class="pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-1.5 py-0.5 text-xs text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
-                    {word.transliteration}
-                  </span>
-                </Show>
-              </span>
-            );
-          }}
-        </For>
+        {nodes}
       </p>
-
-      <div class="mt-1 flex justify-end" dir="ltr">
-        <button
-          type="button"
-          onClick={copyVerse}
-          class="cursor-pointer text-xs text-(--sl-color-white) transition-colors duration-200 hover:text-(--sl-color-accent-high)"
-          aria-label={`Copy ayah ${props.verse.key}`}
-        >
-          {copied() ? "Copied" : "Copy"}
-        </button>
-      </div>
     </div>
   );
-};
-
-export default Verse;
+}

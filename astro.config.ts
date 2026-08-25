@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import solidJS from "@astrojs/solid-js";
+import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import mermaid from "astro-mermaid";
 import tailwindcss from "@tailwindcss/vite";
@@ -15,11 +15,11 @@ export default defineConfig({
       autoTheme: true,
       enableLog: false,
     }),
-    solidJS(),
+    react(),
     starlight({
       title: "Qurescent",
       description:
-        "A documentation-style manual for the Quran — mushaf, tajwid, tadabbur, lineage.",
+        "Quran from an engineer lens — static mushaf, named sources, tajwid, tadabbur, lineage.",
       customCss: ["./src/styles/global.css"],
       social: [
         {

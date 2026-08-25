@@ -1,39 +1,56 @@
-import { atom } from "nanostores";
+import { persistentAtom } from "@nanostores/persistent";
 import type { ITranslationEdition } from "_types/chapter";
 import catalog from "../data/translations/catalog.json";
 
-const STORAGE_KEY = "qurescent.enabledTranslations";
-const DEFAULT_CODES = ["en", "ms"];
+const STORAGE_KEY = "qurescent.selectedTranslation";
+const LEGACY_KEY = "qurescent.enabledTranslations";
+/** Default: English. `null` = hide full-verse translation. */
+const DEFAULT_CODE: string | null = "en";
 
-const readInitial = (): string[] => {
-  if (typeof localStorage === "undefined") return DEFAULT_CODES;
+/** One-shot migrate multi-select array → single code. */
+function migrateLegacySelection(): void {
+  if (typeof localStorage === "undefined") return;
+  if (localStorage.getItem(STORAGE_KEY) !== null) return;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_CODES;
-    const parsed = JSON.parse(raw) as string[];
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_CODES;
+    const legacy = localStorage.getItem(LEGACY_KEY);
+    if (legacy === null) return;
+    const parsed = JSON.parse(legacy) as unknown;
+    if (!Array.isArray(parsed)) return;
+    let next: string | null = DEFAULT_CODE;
+    if (parsed.length === 0) next = null;
+    else if (parsed.includes("en")) next = "en";
+    else {
+      const first = parsed.find((c): c is string => typeof c === "string");
+      next = first ?? null;
+    }
+    localStorage.setItem(STORAGE_KEY, next ?? "");
   } catch {
-    return DEFAULT_CODES;
+    /* ignore corrupt legacy */
   }
-};
+}
+
+migrateLegacySelection();
 
 export const translationCatalog = catalog as ITranslationEdition[];
 
-export const enabledTranslationsAtom = atom<string[]>(readInitial());
+export const selectedTranslationAtom = persistentAtom<string | null>(
+  STORAGE_KEY,
+  DEFAULT_CODE,
+  {
+    encode: (value) => value ?? "",
+    decode: (value) => (value === "" || value === "null" ? null : value),
+  },
+);
 
-export const setEnabledTranslations = (codes: string[]) => {
-  enabledTranslationsAtom.set(codes);
-  if (typeof localStorage !== "undefined") {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
-  }
+export const setSelectedTranslation = (code: string | null) => {
+  selectedTranslationAtom.set(code);
 };
 
-export const toggleTranslation = (code: string) => {
-  const current = enabledTranslationsAtom.get();
-  const next = current.includes(code)
-    ? current.filter((c) => c !== code)
-    : [...current, code];
-  // Keep at least one translation enabled.
-  if (next.length === 0) return;
-  setEnabledTranslations(next);
+/** Exclusive select; click active code again to clear. */
+export const selectTranslation = (code: string) => {
+  const current = selectedTranslationAtom.get();
+  setSelectedTranslation(current === code ? null : code);
 };
+
+/** @deprecated use selectedTranslationAtom */
+export const enabledTranslationsAtom = selectedTranslationAtom;

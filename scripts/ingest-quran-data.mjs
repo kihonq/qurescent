@@ -7,7 +7,7 @@
  *   api.quran.com one-shot dump — QUL JSON downloads require sign-in; this is a
  *   fetch-once, check-into-repo snapshot, never called at runtime.
  *
- * Usage: pnpm data:ingest
+ * Usage: bun run data:ingest
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
@@ -148,7 +148,7 @@ async function main() {
     [
       "# Static Quran data sources",
       "",
-      "Fetched once by `pnpm data:ingest`. Not re-fetched at build or runtime.",
+      "Fetched once by `bun run data:ingest`. Not re-fetched at build or runtime.",
       "",
       "| Asset | Source | License / notes |",
       "| --- | --- | --- |",

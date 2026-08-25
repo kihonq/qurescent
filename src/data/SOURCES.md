@@ -1,6 +1,6 @@
 # Static Quran data sources
 
-Fetched once by `pnpm data:ingest`. Not re-fetched at build or runtime.
+Fetched once by `bun run data:ingest`. Not re-fetched at build or runtime.
 
 | Asset | Source | License / notes |
 | --- | --- | --- |

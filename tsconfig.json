@@ -2,16 +2,17 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "skipLibCheck": true,
     "paths": {
       "@components/*": ["./src/components/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@stores/*": ["./src/stores/*"],
       "@helpers/*": ["./src/helpers/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@styles/*": ["./src/styles/*"],
       "_types/*": ["./src/types/*"]
-    },
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "skipLibCheck": true
+    }
   }
 }

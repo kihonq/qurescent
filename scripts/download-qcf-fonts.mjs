@@ -9,8 +9,8 @@
  *   public/fonts/qcf-v4/ot-svg/{light,dark,sepia}/p{N}.woff2
  *
  * Usage:
- *   pnpm data:fonts            # all 604 pages × formats
- *   pnpm data:fonts -- --pages=1-3   # subset for local testing
+ *   bun run data:fonts            # all 604 pages × formats
+ *   bun run data:fonts -- --pages=1-3   # subset for local testing
  */
 import { mkdir, writeFile, access } from "node:fs/promises";
 import { dirname, join } from "node:path";

@@ -2,20 +2,20 @@
 title: Qurescent
 head:
   - tag: title
-    content: Qurescent — a techdoc manual for the Quran
-description: A documentation-style site for learning the Quran — mushaf reader, tajwid, tadabbur, and lineage.
+    content: Qurescent — Quran from an engineer lens
+description: Static techdoc for the Quran — mushaf with QCF V4 tajwid, source-marked guides, zero runtime APIs.
 template: splash
 editUrl: false
 lastUpdated: false
 hero:
-  title: A manual for the Quran
-  tagline: Techdoc-style learning — read the mushaf, study tajwid, sit with tadabbur, and follow lineage & revelation history. Static, searchable, no ads.
+  title: Qurescent
+  tagline: Learn the Quran the way an engineer reads a system — fixed text, named sources, certainty marked. Static build. No ads.
   actions:
-    - text: Open the mushaf
+    - text: Open mushaf
       link: /read/
       icon: right-arrow
       variant: primary
-    - text: Start with the guide
+    - text: Read the guide
       link: /guide/
       icon: open-book
       variant: minimal
@@ -25,18 +25,18 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 
 <CardGrid stagger>
   <Card title="Mushaf" icon="document">
-    Verse-by-verse reading with QCF V4 tajweed coloring, word-by-word glosses,
-    and stacked translations. Open it from the sidebar under **Mushaf**.
+    Madani text with QCF V4 tajweed glyphs, optional word-by-word glosses, and a
+    translation stack you can empty. Sidebar → **Mushaf**.
   </Card>
   <Card title="Tajwid" icon="pencil">
-    How the color rules work, including a color legend validated against the
-    Dar Al-Maarifah standard.
+    Color rules mapped to Dar Al-Maarifah / Al-Azhar legend — not CSS overlays
+    guessed after the fact.
   </Card>
   <Card title="Tadabbur" icon="approve-check">
-    Short reflections for contemplation — not a standalone tafsir corpus.
+    Short reflections for contemplation. Not a tafsir dump.
   </Card>
   <Card title="Lineage & history" icon="information">
-    Prophetic lineage and revelation chronology, with confirmed vs traditionally
-    reported material marked clearly.
+    Nasab and revelation chronology with confirmed vs traditionally reported
+    edges drawn explicitly.
   </Card>
 </CardGrid>

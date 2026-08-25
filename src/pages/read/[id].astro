@@ -1,9 +1,6 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import Verse from "@components/Verse";
-import TranslationStack, {
-  TranslationSettingsDrawer,
-} from "@components/TranslationStack";
+import ChapterReader from "@components/ChapterReader";
 import { getChapter } from "@helpers/chapter";
 import {
   getAllTranslationMaps,
@@ -26,15 +23,31 @@ if (!chapter) {
 const translationMaps = getAllTranslationMaps();
 const catalog = getTranslationCatalog();
 
-const verseTranslations = (verseKey: string) => {
+const translationsByVerse: Record<string, Record<string, string>> = {};
+const pageNumbers = new Set<number>();
+for (const verse of chapter.verses) {
   const out: Record<string, string> = {};
   for (const edition of catalog) {
-    const text = translationMaps[edition.id]?.[verseKey];
+    const text = translationMaps[edition.id]?.[verse.key];
     if (text) out[edition.id] = text;
   }
-  return out;
-};
+  translationsByVerse[verse.key] = out;
+  for (const word of verse.words) pageNumbers.add(word.pageNumber);
+}
 ---
+
+{
+  /* Hoisted to <head> — start QCF fetch before the island hydrates. */
+  [...pageNumbers].map((page) => (
+    <link
+      rel="preload"
+      href={`/fonts/qcf-v4/colrv1/p${page}.woff2`}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+  ))
+}
 
 <StarlightPage
   frontmatter={{
@@ -44,44 +57,19 @@ const verseTranslations = (verseKey: string) => {
     editUrl: false,
   }}
 >
-  <div class="quran-reader not-content" dir="ltr">
-    <div class="mb-6 flex flex-row items-start justify-between gap-3">
-      <div>
-        <p class="text-sm text-(--sl-color-gray-2)">
-          {chapter.englishNameTranslation} · {chapter.totalVerse} ayahs
-        </p>
-        <p
-          class="font-surah-name mt-1 text-4xl text-(--sl-color-white)"
-          dir="rtl"
-        >
-          {chapter.id.toString().padStart(3, "0")}
-        </p>
-      </div>
-      <TranslationSettingsDrawer client:load />
-    </div>
-
-    {
-      chapter.id !== 1 && (
-        <div class="mb-8 flex justify-center">
-          <p class="font-hafs-uthmanic text-4xl text-(--sl-color-white)">
-            ﷽
-          </p>
-        </div>
-      )
-    }
-
-    <article dir="rtl" class="space-y-2">
-      {
-        chapter.verses.map((verse) => (
-          <>
-            <Verse verse={verse} client:visible />
-            <TranslationStack
-              translations={verseTranslations(verse.key)}
-              client:visible
-            />
-          </>
-        ))
-      }
-    </article>
-  </div>
+  <ChapterReader
+    client:load
+    chapter={chapter}
+    translationsByVerse={translationsByVerse}
+  />
 </StarlightPage>
+
+<style is:global>
+  /* Drop Starlight’s title ContentPanel — reader chrome owns the header. */
+  main > .content-panel:has(#_top) {
+    display: none;
+  }
+  main > .content-panel:has(#_top) + .content-panel {
+    border-top: none;
+  }
+</style>

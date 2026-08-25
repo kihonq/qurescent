@@ -3,31 +3,34 @@
   "type": "module",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "bun@1.3.11",
   "scripts": {
     "dev": "astro dev",
     "start": "astro preview",
     "prebuild": "astro check",
     "build": "astro build",
-    "deploy": "pnpm build && wrangler pages deploy dist --project-name=qurescent",
+    "deploy": "bun run build && wrangler pages deploy dist --project-name=qurescent",
     "typecheck": "astro check",
-    "data:ingest": "node scripts/ingest-quran-data.mjs",
-    "data:fonts": "node scripts/download-qcf-fonts.mjs",
+    "data:ingest": "bun scripts/ingest-quran-data.mjs",
+    "data:fonts": "bun scripts/download-qcf-fonts.mjs",
     "lint:eslint": "eslint . --ext .js,.ts,.astro",
     "lint:prettier": "prettier --write --plugin-search-dir=. ."
   },
   "dependencies": {
-    "@astrojs/solid-js": "^7.0.2",
+    "@astrojs/react": "^6.0.4",
     "@astrojs/starlight": "^0.41.8",
     "@astrojs/starlight-tailwind": "^5.0.0",
     "@fontsource/atkinson-hyperlegible": "^5.3.0",
     "@fontsource/crimson-pro": "^5.3.0",
-    "@nanostores/solid": "^1.1.1",
+    "@nanostores/persistent": "^1.3.5",
+    "@nanostores/react": "^1.1.0",
     "astro": "^7.2.6",
     "astro-mermaid": "^2.1.0",
     "fuse.js": "^7.5.0",
     "mermaid": "^11.17.1",
     "nanostores": "^1.5.2",
-    "solid-js": "^1.9.15",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
@@ -35,6 +38,8 @@
     "@babel/core": "^7.20.12",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "eslint": "^8.32.0",
@@ -46,5 +51,8 @@
     "sass": "^1.57.1",
     "typescript": "^6.0.3",
     "wrangler": "^4.125.0"
+  },
+  "overrides": {
+    "satteri": "0.10.5"
   }
 }

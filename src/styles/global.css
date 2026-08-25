@@ -121,4 +121,9 @@
     outline: 2px solid var(--sl-color-accent);
     outline-offset: 2px;
   }
+
+  /* Reader: keep mushaf plane quiet; chrome is border + type only */
+  .quran-reader {
+    --qr-verse-gap: 2rem;
+  }
 }

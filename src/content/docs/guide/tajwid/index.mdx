@@ -3,15 +3,16 @@ title: Tajwid
 description: How Qurescent presents tajwid color rules in the reader.
 ---
 
-The reader renders the Madani mushaf with **QCF V4 tajweed fonts** — tajwid
-colors are baked into the glyphs themselves (the same approach Quran.com uses),
-not painted on with CSS after the fact.
+The reader renders the Madani mushaf with **QCF V4 tajweed fonts**. Colors are
+inside the glyphs (same approach as Quran.com), not painted with CSS after
+layout.
 
-## What you’ll find here
+## What is here
 
-- [Color legend](/guide/tajwid/color-legend/) — maps each visible color to its
-  tajwid rule, validated against the Dar Al-Maarifah / Al-Azhar-endorsed legend
+- [Color legend](/guide/tajwid/color-legend/) — each visible color → tajwid rule,
+  checked against the Dar Al-Maarifah / Al-Azhar-endorsed legend
 
-Word-by-word English glosses sit under each word and are independent of the
-full-verse translation stack (English + Bahasa Melayu by default; change them
-with **Aa Translations** in the chapter header).
+Open **Settings** on a surah page: switches for word-by-word and colored
+tajweed, plus a single translation ([EN] / [MS]). Colored tajweed uses QCF V4
+COLRv1 with a dark `font-palette` in dark mode (Firefox uses OT-SVG theme
+packs).
