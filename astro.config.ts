@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://qurescent.kihong.dev",
   output: "static",
   integrations: [
     // Must precede Starlight so rehype processes ```mermaid fences.

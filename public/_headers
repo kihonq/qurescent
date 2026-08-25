@@ -1,0 +1,6 @@
+# Long-cache self-hosted fonts (QCF V4 + UI). Rev content-hash via filename when fonts change.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

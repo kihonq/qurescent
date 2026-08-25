@@ -8,6 +8,7 @@
     "start": "astro preview",
     "prebuild": "astro check && tsc --noEmit",
     "build": "astro build",
+    "deploy": "pnpm build && wrangler pages deploy dist --project-name=qurescent",
     "data:ingest": "node scripts/ingest-quran-data.mjs",
     "data:fonts": "node scripts/download-qcf-fonts.mjs",
     "lint:eslint": "eslint . --ext .js,.ts,.astro",
@@ -42,6 +43,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "sass": "^1.57.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.125.0"
   }
 }
