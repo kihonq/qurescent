@@ -111,6 +111,13 @@
     backdrop-filter: blur(12px);
   }
 
+  /* Mobile: keep header search clear of the fixed sidebar toggle */
+  @media (max-width: 49.999rem) {
+    [data-has-sidebar] site-search button[data-open-modal] {
+      margin-inline-end: calc(var(--sl-menu-button-size) + 0.25rem);
+    }
+  }
+
   .quran-reader a {
     color: inherit;
     text-decoration: none;

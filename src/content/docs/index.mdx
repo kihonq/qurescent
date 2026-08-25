@@ -21,22 +21,27 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
+import { LinkCard, CardGrid } from "@astrojs/starlight/components";
 
 <CardGrid stagger>
-  <Card title="Mushaf" icon="document">
-    Madani text with QCF V4 tajweed glyphs, optional word-by-word glosses, and a
-    translation stack you can empty. Sidebar → **Mushaf**.
-  </Card>
-  <Card title="Tajwid" icon="pencil">
-    Color rules mapped to Dar Al-Maarifah / Al-Azhar legend — not CSS overlays
-    guessed after the fact.
-  </Card>
-  <Card title="Tadabbur" icon="approve-check">
-    Short reflections for contemplation. Not a tafsir dump.
-  </Card>
-  <Card title="Lineage & history" icon="information">
-    Nasab and revelation chronology with confirmed vs traditionally reported
-    edges drawn explicitly.
-  </Card>
+  <LinkCard
+    title="Mushaf"
+    href="/read/"
+    description="Madani text with QCF V4 tajweed glyphs, optional word-by-word glosses, and a translation stack you can empty."
+  />
+  <LinkCard
+    title="Tajwid"
+    href="/guide/tajwid/"
+    description="Color rules mapped to Dar Al-Maarifah / Al-Azhar legend — not CSS overlays guessed after the fact."
+  />
+  <LinkCard
+    title="Tadabbur"
+    href="/guide/tadabbur/"
+    description="Short reflections for contemplation. Not a tafsir dump."
+  />
+  <LinkCard
+    title="Lineage & history"
+    href="/guide/lineage/"
+    description="Nasab and revelation chronology with confirmed vs traditionally reported edges drawn explicitly."
+  />
 </CardGrid>

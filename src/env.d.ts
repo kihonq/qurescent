@@ -15,3 +15,10 @@ declare module "virtual:starlight/components/Search";
 declare module "virtual:starlight/components/SiteTitle";
 declare module "virtual:starlight/components/SocialIcons";
 declare module "virtual:starlight/components/ThemeSelect";
+declare module "virtual:starlight/pagefind-config" {
+  export const pagefindUserConfig: Record<string, unknown>;
+}
+declare module "virtual:starlight/project-context" {
+  const project: { trailingSlash?: string };
+  export default project;
+}

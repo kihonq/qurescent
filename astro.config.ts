@@ -18,9 +18,13 @@ export default defineConfig({
     react(),
     starlight({
       title: "Qurescent",
+      favicon: "/favicon.ico",
       description:
         "Quran from an engineer lens — static mushaf, named sources, tajwid, tadabbur, lineage.",
       customCss: ["./src/styles/global.css"],
+      components: {
+        Search: "./src/components/overrides/Search.astro",
+      },
       social: [
         {
           icon: "github",
