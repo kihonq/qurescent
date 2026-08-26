@@ -1,8 +1,10 @@
 /**
- * Client mushaf search — Lunr.js + lunr-languages Arabic stemmer (#7).
- * Pagefind remains for docs; this panel indexes verses + EN/MS translations.
+ * Client mushaf search — Lunr over verses + EN/MS (#7).
+ * Pagefind remains for docs; Arabic is diacritic-normalized (no lunr-ar stemmer).
  */
 import { useEffect, useId, useRef, useState } from "react";
+import { normalizeSearchQuery } from "../lib/arabic-normalize";
+import { registerQurescentLunrPipeline } from "../lib/lunr-pipeline";
 
 type VerseDoc = {
   chapter: number;
@@ -41,16 +43,8 @@ async function loadVerseIndex(): Promise<Cache> {
 
   loadPromise = (async (): Promise<Cache> => {
     const lunr = (await import("lunr")).default;
-    const stemmerSupport = (await import("lunr-languages/lunr.stemmer.support.js"))
-      .default;
-    const ar = (await import("lunr-languages/lunr.ar.js")).default;
-    const multiLanguage = (await import("lunr-languages/lunr.multi.js")).default;
-
-    stemmerSupport(lunr);
-    ar(lunr);
-    multiLanguage(lunr);
-    // Pipelines must be registered before Index.load (lunr-languages README).
-    lunr.multiLanguage("ar", "en");
+    // Must register before Index.load (pipeline names in serialized index).
+    registerQurescentLunrPipeline(lunr);
 
     const res = await fetch("/search/verses.json");
     if (!res.ok) throw new Error(`Failed to load verse index (${res.status})`);
@@ -74,14 +68,13 @@ function runSearch(
   docs: Record<string, VerseDoc>,
   raw: string,
 ): Hit[] {
-  const q = raw.trim();
+  const q = normalizeSearchQuery(raw);
   if (!q) return [];
 
   let results: Array<{ ref: string; score: number }>;
   try {
     results = index.search(q);
   } catch {
-    // Lunr throws on some malformed queries — fall back to plain terms.
     results = index.search(
       q
         .split(/\s+/)
@@ -161,7 +154,13 @@ export default function VerseSearch() {
       return;
     }
     const handle = window.setTimeout(() => {
-      setHits(runSearch(cached!.index, cached!.docs, query));
+      try {
+        setHits(runSearch(cached!.index, cached!.docs, query));
+        setError(null);
+      } catch (e: unknown) {
+        setHits([]);
+        setError(e instanceof Error ? e.message : "Search failed");
+      }
     }, 120);
     return () => window.clearTimeout(handle);
   }, [query, status, active]);
@@ -190,12 +189,12 @@ export default function VerseSearch() {
       {status === "loading" && (
         <p className="verse-search__meta">Loading verse index…</p>
       )}
-      {status === "error" && (
+      {(status === "error" || error) && (
         <p className="verse-search__meta verse-search__meta--error" role="alert">
           {error}
         </p>
       )}
-      {status === "ready" && query.trim() && (
+      {status === "ready" && !error && query.trim() && (
         <p className="verse-search__meta" aria-live="polite">
           {hits.length === 0
             ? "No verses matched."

@@ -71,7 +71,7 @@ Self-host via `@fontsource/*` (static; no runtime Google Fonts).
 ### Search
 
 - **Docs:** Starlight Pagefind (Cmd+K → Docs tab)
-- **Mushaf verses:** Lunr.js + `lunr-languages` Arabic stemmer (Cmd+K → Mushaf tab); build-time index via `bun run search:index` (#7)
+- **Mushaf verses:** Lunr.js over diacritic-normalized Uthmani + EN/MS (Cmd+K → Mushaf tab); build-time index via `bun run search:index` (#7). Do not use `lunr-languages` Arabic stemmer under Vite/ESM (throws on `this`).
 
 ### Copy (engineer lens)
 

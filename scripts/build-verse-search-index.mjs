@@ -1,6 +1,6 @@
 /**
- * Build a static Lunr index (Arabic stemmer + EN) over all verses + EN/MS
- * translations. Writes `public/search/verses.json` for client search (#7).
+ * Build a static Lunr index over all verses + EN/MS translations.
+ * Arabic is diacritic-normalized; Unicode-safe pipeline (no lunr-ar stemmer).
  *
  * Run: bun scripts/build-verse-search-index.mjs
  */
@@ -9,13 +9,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import lunr from "lunr";
-import stemmerSupport from "lunr-languages/lunr.stemmer.support.js";
-import multiLanguage from "lunr-languages/lunr.multi.js";
-import ar from "lunr-languages/lunr.ar.js";
-
-stemmerSupport(lunr);
-ar(lunr);
-multiLanguage(lunr);
+import { normalizeArabic } from "../src/lib/arabic-normalize.ts";
+import { useQurescentLunrPipeline } from "../src/lib/lunr-pipeline.ts";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const chaptersDir = path.join(root, "src/data/chapters");
@@ -34,7 +29,6 @@ const ms = JSON.parse(
 
 const metaById = new Map(chaptersMeta.map((c) => [c.id, c]));
 
-/** @type {Array<{ id: string, arabic: string, en: string, ms: string, chapter: number, verse: number, surah: string, url: string, excerpt: string }>} */
 const docs = [];
 
 const files = (await readdir(chaptersDir))
@@ -46,34 +40,40 @@ for (const file of files) {
     await readFile(path.join(chaptersDir, file), "utf8"),
   );
   const meta = metaById.get(chapter.id);
-  const surah = meta?.englishName ?? `Surah ${chapter.id}`;
+  const surahLabel = meta?.englishName ?? `Surah ${chapter.id}`;
+  const surahAr = meta?.name ? normalizeArabic(meta.name) : "";
 
   for (const verse of chapter.verses) {
-    const arabic = verse.words
+    const displayArabic = verse.words
       .filter((w) => w.charType === "word")
       .map((w) => w.textUthmani)
       .join(" ");
     const enText = en[verse.key] ?? "";
     const msText = ms[verse.key] ?? "";
-    const excerpt = (enText || msText || arabic).slice(0, 160);
+    const excerpt = (enText || msText || displayArabic).slice(0, 160);
     docs.push({
       id: verse.key,
-      arabic,
+      arabic: normalizeArabic(displayArabic),
       en: enText,
       ms: msText,
+      surah: [surahLabel, surahAr, meta?.englishNameTranslation ?? ""]
+        .filter(Boolean)
+        .join(" "),
       chapter: chapter.id,
       verse: verse.number,
-      surah,
       url: `/read/${chapter.id}/#${verse.key.replace(":", "-")}`,
       excerpt,
+      displayArabic,
+      surahLabel,
     });
   }
 }
 
 const index = lunr(function () {
-  this.use(lunr.multiLanguage("ar", "en"));
+  useQurescentLunrPipeline(this);
   this.ref("id");
   this.field("arabic", { boost: 10 });
+  this.field("surah", { boost: 12 });
   this.field("en", { boost: 5 });
   this.field("ms", { boost: 4 });
 
@@ -81,6 +81,7 @@ const index = lunr(function () {
     this.add({
       id: doc.id,
       arabic: doc.arabic,
+      surah: doc.surah,
       en: doc.en,
       ms: doc.ms,
     });
@@ -88,7 +89,7 @@ const index = lunr(function () {
 });
 
 const payload = {
-  version: 1,
+  version: 2,
   builtAt: new Date().toISOString(),
   count: docs.length,
   index,
@@ -98,10 +99,10 @@ const payload = {
       {
         chapter: d.chapter,
         verse: d.verse,
-        surah: d.surah,
+        surah: d.surahLabel,
         url: d.url,
         excerpt: d.excerpt,
-        arabic: d.arabic.slice(0, 120),
+        arabic: d.displayArabic.slice(0, 120),
       },
     ]),
   ),
@@ -112,5 +113,5 @@ await writeFile(outFile, JSON.stringify(payload));
 
 const sizeMb = (Buffer.byteLength(JSON.stringify(payload)) / (1024 * 1024)).toFixed(2);
 console.log(
-  `Wrote ${outFile} — ${docs.length} verses, ${sizeMb} MB (Lunr ar+en multi)`,
+  `Wrote ${outFile} — ${docs.length} verses, ${sizeMb} MB (Lunr + Arabic normalize)`,
 );
