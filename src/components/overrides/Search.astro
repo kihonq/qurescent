@@ -1,6 +1,7 @@
 ---
 import Icon from "../../../node_modules/@astrojs/starlight/user-components/Icon.astro";
 import project from 'virtual:starlight/project-context';
+import VerseSearch from "../VerseSearch";
 
 const pagefindTranslations = {
 	placeholder: Astro.locals.t('search.label'),
@@ -37,17 +38,60 @@ if (project.trailingSlash === 'never') dataAttributes['data-strip-trailing-slash
 			<button data-close-modal class="sl-flex md:sl-hidden">
 				{Astro.locals.t('search.cancelLabel')}
 			</button>
+			<div class="search-tabs" role="tablist" aria-label="Search scope">
+				<button
+					type="button"
+					role="tab"
+					id="search-tab-docs"
+					aria-selected="true"
+					aria-controls="starlight__search"
+					data-search-tab="docs"
+				>
+					Docs
+				</button>
+				<button
+					type="button"
+					role="tab"
+					id="search-tab-mushaf"
+					aria-selected="false"
+					aria-controls="qurescent__verse-search"
+					data-search-tab="mushaf"
+				>
+					Mushaf
+				</button>
+			</div>
 			{
 				import.meta.env.DEV ? (
-					<div style="margin: auto; text-align: center; white-space: pre-line;" dir="ltr">
+					<div
+						data-search-panel="docs"
+						id="starlight__search"
+						role="tabpanel"
+						aria-labelledby="search-tab-docs"
+						style="margin: auto; text-align: center; white-space: pre-line; padding: 1rem;"
+						dir="ltr"
+					>
 						<p>{Astro.locals.t('search.devWarning')}</p>
 					</div>
 				) : (
-					<div class="search-container">
+					<div
+						class="search-container"
+						data-search-panel="docs"
+						role="tabpanel"
+						aria-labelledby="search-tab-docs"
+					>
 						<div id="starlight__search" />
 					</div>
 				)
 			}
+			<div
+				id="qurescent__verse-search"
+				data-search-panel="mushaf"
+				role="tabpanel"
+				aria-labelledby="search-tab-mushaf"
+				hidden
+			>
+				<VerseSearch client:load />
+			</div>
 		</div>
 	</dialog>
 </site-search>
@@ -110,9 +154,31 @@ if (project.trailingSlash === 'never') dataAttributes['data-strip-trailing-slash
 			openBtn.disabled = false;
 			closeBtn.addEventListener('click', closeModal);
 
+			const tabs = this.querySelectorAll<HTMLButtonElement>('[data-search-tab]');
+			const setTab = (mode: 'docs' | 'mushaf') => {
+				for (const tab of tabs) {
+					const selected = tab.dataset.searchTab === mode;
+					tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+				}
+				for (const panel of this.querySelectorAll<HTMLElement>('[data-search-panel]')) {
+					const show = panel.dataset.searchPanel === mode;
+					panel.toggleAttribute('hidden', !show);
+				}
+				if (mode === 'docs') {
+					this.querySelector<HTMLInputElement>('#starlight__search input')?.focus();
+				}
+			};
+			for (const tab of tabs) {
+				tab.addEventListener('click', () => {
+					const mode = tab.dataset.searchTab === 'mushaf' ? 'mushaf' : 'docs';
+					setTab(mode);
+				});
+			}
+
 			dialog.addEventListener('close', () => {
 				document.body.toggleAttribute('data-search-modal-open', false);
 				window.removeEventListener('click', onClick);
+				setTab('docs');
 			});
 
 			// Listen for `ctrl + k` and `cmd + k` keyboard shortcuts.
@@ -243,8 +309,35 @@ if (project.trailingSlash === 'never') dataAttributes['data-strip-trailing-slash
 			overflow: auto;
 			flex-direction: column;
 			flex-grow: 1;
-			gap: 1rem;
+			gap: 0.5rem;
 			padding: 1rem;
+		}
+
+		.search-tabs {
+			display: flex;
+			gap: 0.25rem;
+			margin: -0.25rem -0.25rem 0;
+			padding: 0 0.25rem;
+			border-bottom: 1px solid var(--sl-color-gray-5);
+		}
+		.search-tabs [role='tab'] {
+			cursor: pointer;
+			border: 0;
+			border-radius: 0.375rem 0.375rem 0 0;
+			background: transparent;
+			color: var(--sl-color-gray-2);
+			font: inherit;
+			font-size: 0.875rem;
+			font-weight: 600;
+			padding: 0.45rem 0.85rem;
+		}
+		.search-tabs [role='tab'][aria-selected='true'] {
+			color: var(--sl-color-white);
+			box-shadow: inset 0 -2px 0 var(--sl-color-accent);
+		}
+		.search-tabs [role='tab']:hover,
+		.search-tabs [role='tab']:focus-visible {
+			color: var(--sl-color-white);
 		}
 
 		button[data-close-modal] {

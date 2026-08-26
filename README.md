@@ -14,7 +14,7 @@ Quran from an engineer lens — a **static** [Astro Starlight](https://starlight
 | Starlight shell (sidebar, Pagefind, light/dark) | Shipped |
 | Mushaf `/read/` — QCF V4 COLRv1 tajweed, word-by-word, EN/MS | Alpha |
 | Guide — tajwid (draft color legend), tadabbur, lineage | Thin / draft |
-| Arabic Quran search (Lunr) | Not yet (#7) |
+| Arabic Quran search (Lunr) | Shipped — Cmd+K → **Mushaf** tab (#7) |
 | Per-verse audio | Out of scope for current map (#9) |
 
 Stack: **Astro 7**, **Starlight**, **React 19** (reader island), **Bun**, **nanostores**, **Cloudflare Pages**.
@@ -33,6 +33,7 @@ bun run dev                 # http://localhost:4321
 | `bun run typecheck` | `astro check` |
 | `bun run build` | Static build → `dist/` |
 | `bun run deploy` | Build + deploy Pages (`main`) |
+| `bun run search:index` | Build Lunr mushaf verse index → `public/search/` |
 | `bun run data:ingest` | Re-fetch static Quran JSON (rarely needed) |
 | `bun run data:fonts` | Download QCF V4 fonts |
 

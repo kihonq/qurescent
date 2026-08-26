@@ -181,7 +181,11 @@ export default function Verse({ verse, fontsReady, theme }: Props) {
   }
 
   return (
-    <div className="mb-10" dir="rtl">
+    <div
+      id={verse.key.replace(":", "-")}
+      className="mb-10 scroll-mt-28"
+      dir="rtl"
+    >
       <div className="sr-only" aria-label={`Ayah ${verse.number}`}>
         <div>{plainText}</div>
         <div>{diacritizedText}</div>
