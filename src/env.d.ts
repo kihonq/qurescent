@@ -11,6 +11,7 @@ declare module "virtual:starlight/user-config" {
 }
 
 declare module "virtual:starlight/components/LanguageSelect";
+declare module "virtual:starlight/components/MobileMenuFooter";
 declare module "virtual:starlight/components/Search";
 declare module "virtual:starlight/components/SiteTitle";
 declare module "virtual:starlight/components/SocialIcons";
