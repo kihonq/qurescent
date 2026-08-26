@@ -96,7 +96,7 @@ export default function ChapterReader({
 
       <header
         className={[
-          "sticky z-20 -mx-4 mb-8 border-b border-(--sl-color-gray-5) px-4 transition-[padding,background-color] duration-300 sm:-mx-6 sm:px-6",
+          "sticky z-20 mb-8 border-b border-(--sl-color-gray-5) transition-[padding,background-color] duration-300",
           "top-(--sl-nav-height,3.5rem)",
           compact
             ? "bg-(--sl-color-bg)/90 py-2.5 backdrop-blur-md"

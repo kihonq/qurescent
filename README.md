@@ -74,7 +74,7 @@ See **[CONTRIBUTING.md](./CONTRIBUTING.md)**. Issues and decisions live on GitHu
 - Full site credits: **[About](https://qurescent.kihong.dev/about/)**
 - Mushaf glyphs: **QCF V4** (Ayman24x7 / QUL — see attribution section above)
 - Static text / WBW / translations: [`src/data/SOURCES.md`](./src/data/SOURCES.md)
-- Tajwid color *names*: draft aligned to Dar Al-Maarifah — [color legend](https://qurescent.kihong.dev/guide/tajwid/color-legend/) pending human spot-check
+- Tajwid color *names*: draft aligned to Dar Al-Maarifah — [Tajwid](https://qurescent.kihong.dev/guide/tajwid/) pending human spot-check
 
 ## License
 

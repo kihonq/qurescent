@@ -1,0 +1,36 @@
+/**
+ * Ship theme: Plum Ink — near-black / soft-white techdoc + striking burgundy.
+ * Starlight CSS custom properties per
+ * https://starlight.astro.build/guides/css-and-tailwind/#theming
+ */
+:root,
+::backdrop {
+  /* Dark mode */
+  --sl-color-accent-low: #2a0f22;
+  --sl-color-accent: #e891b0;
+  --sl-color-accent-high: #f3d0df;
+  --sl-color-white: #f6f4f5;
+  --sl-color-gray-1: #ebe8ea;
+  --sl-color-gray-2: #c5c0c3;
+  --sl-color-gray-3: #8f898d;
+  --sl-color-gray-4: #4a4448;
+  --sl-color-gray-5: #1c191b;
+  --sl-color-gray-6: #121011;
+  --sl-color-black: #0a090a;
+}
+
+:root[data-theme="light"],
+[data-theme="light"] ::backdrop {
+  --sl-color-accent-low: #f5d6e4;
+  --sl-color-accent: #9b2458;
+  --sl-color-accent-high: #5c1034;
+  --sl-color-white: #0a090a;
+  --sl-color-gray-1: #18181b;
+  --sl-color-gray-2: #3f3f46;
+  --sl-color-gray-3: #71717a;
+  --sl-color-gray-4: #a1a1aa;
+  --sl-color-gray-5: #e4e4e7;
+  --sl-color-gray-6: #f4f4f5;
+  --sl-color-gray-7: #fafafa;
+  --sl-color-black: #ffffff;
+}

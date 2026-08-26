@@ -4,10 +4,21 @@ import starlight from "@astrojs/starlight";
 import mermaid from "astro-mermaid";
 import tailwindcss from "@tailwindcss/vite";
 
+import chapters from "./src/data/chapters.json";
+import type { IChapterMeta } from "./src/types/chapter";
+
+const mushafSurahs = (chapters as IChapterMeta[]).map((c) => ({
+  label: `${String(c.id).padStart(3, "0")} ${c.englishName}`,
+  link: `/read/${c.id}/`,
+}));
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://qurescent.kihong.dev",
   output: "static",
+  redirects: {
+    "/guide/tajwid/color-legend": "/guide/tajwid/",
+  },
   integrations: [
     // Must precede Starlight so rehype processes ```mermaid fences.
     mermaid({
@@ -24,6 +35,7 @@ export default defineConfig({
       customCss: ["./src/styles/global.css"],
       components: {
         Search: "./src/components/overrides/Search.astro",
+        Sidebar: "./src/components/overrides/Sidebar.astro",
       },
       social: [
         {
@@ -35,27 +47,17 @@ export default defineConfig({
       sidebar: [
         {
           label: "Mushaf",
-          link: "/read/",
-        },
-        {
-          label: "Guide",
+          collapsed: false,
           items: [
-            { label: "Overview", slug: "guide" },
-            {
-              label: "Tajwid",
-              items: [
-                { label: "Overview", slug: "guide/tajwid" },
-                { label: "Color legend", slug: "guide/tajwid/color-legend" },
-              ],
-            },
-            { label: "Tadabbur", slug: "guide/tadabbur" },
-            { label: "Lineage & history", slug: "guide/lineage" },
+            { label: "All surahs", link: "/read/" },
+            ...mushafSurahs,
           ],
         },
-        {
-          label: "About",
-          slug: "about",
-        },
+        { label: "Guide", slug: "guide" },
+        { label: "Tajwid", slug: "guide/tajwid" },
+        { label: "Tadabbur", slug: "guide/tadabbur" },
+        { label: "Lineage & history", slug: "guide/lineage" },
+        { label: "About", slug: "about" },
       ],
     }),
   ],

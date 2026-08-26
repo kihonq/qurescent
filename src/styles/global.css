@@ -10,38 +10,39 @@
 @import "@fontsource/crimson-pro/600.css";
 @import "@fontsource/crimson-pro/700.css";
 
+/* Plum Ink — Starlight --sl-color-* (beats layered utilities when unlayered) */
+@import "./theme.css";
+
 @config "../../tailwind.config.cjs";
 
-/* Theme baseline — #15 / design-system/qurescent/MASTER.md */
+/* Tailwind ↔ Starlight accent/gray bridge — plum/burgundy + near-black neutrals */
 @theme {
   --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
   --font-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
 
-  /* Accent: teal (not Starlight indigo / purple) */
-  --color-accent-50: var(--color-teal-50);
-  --color-accent-100: var(--color-teal-100);
-  --color-accent-200: var(--color-teal-200);
-  --color-accent-300: var(--color-teal-300);
-  --color-accent-400: var(--color-teal-400);
-  --color-accent-500: var(--color-teal-500);
-  --color-accent-600: var(--color-teal-600);
-  --color-accent-700: var(--color-teal-700);
-  --color-accent-800: var(--color-teal-800);
-  --color-accent-900: var(--color-teal-900);
-  --color-accent-950: var(--color-teal-950);
+  --color-accent-50: #fdf2f7;
+  --color-accent-100: #f9e0eb;
+  --color-accent-200: #f3d0df;
+  --color-accent-300: #e891b0;
+  --color-accent-400: #d45a88;
+  --color-accent-500: #b8336a;
+  --color-accent-600: #9b2458;
+  --color-accent-700: #7a1c46;
+  --color-accent-800: #5c1034;
+  --color-accent-900: #2a0f22;
+  --color-accent-950: #1a0814;
 
-  /* Neutrals: slate for scholarly contrast */
-  --color-gray-50: var(--color-slate-50);
-  --color-gray-100: var(--color-slate-100);
-  --color-gray-200: var(--color-slate-200);
-  --color-gray-300: var(--color-slate-300);
-  --color-gray-400: var(--color-slate-400);
-  --color-gray-500: var(--color-slate-500);
-  --color-gray-600: var(--color-slate-600);
-  --color-gray-700: var(--color-slate-700);
-  --color-gray-800: var(--color-slate-800);
-  --color-gray-900: var(--color-slate-900);
-  --color-gray-950: var(--color-slate-950);
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f4f4f5;
+  --color-gray-200: #e4e4e7;
+  --color-gray-300: #d4d4d8;
+  --color-gray-400: #a1a1aa;
+  --color-gray-500: #71717a;
+  --color-gray-600: #52525b;
+  --color-gray-700: #3f3f46;
+  --color-gray-800: #1c191b;
+  --color-gray-900: #121011;
+  --color-gray-950: #0a090a;
 }
 
 @font-face {
@@ -92,7 +93,6 @@
   }
 }
 
-/* Soft teal wash on splash only — no purple overlay, no inset hero card */
 @layer components {
   [data-has-hero] .page {
     background:
@@ -111,7 +111,6 @@
     backdrop-filter: blur(12px);
   }
 
-  /* Mobile: keep header search clear of the fixed sidebar toggle */
   @media (max-width: 49.999rem) {
     [data-has-sidebar] site-search button[data-open-modal] {
       margin-inline-end: calc(var(--sl-menu-button-size) + 0.25rem);
@@ -129,7 +128,6 @@
     outline-offset: 2px;
   }
 
-  /* Reader: keep mushaf plane quiet; chrome is border + type only */
   .quran-reader {
     --qr-verse-gap: 2rem;
   }
