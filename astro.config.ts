@@ -29,7 +29,22 @@ export default defineConfig({
     react(),
     starlight({
       title: "Qurescent",
-      favicon: "/favicon.ico",
+      logo: {
+        light: "./src/assets/logo-light.svg",
+        dark: "./src/assets/logo-dark.svg",
+        alt: "Qurescent",
+      },
+      favicon: "/favicon.svg",
+      head: [
+        {
+          tag: "link",
+          attrs: { rel: "icon", href: "/favicon.ico", sizes: "any" },
+        },
+        {
+          tag: "link",
+          attrs: { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+        },
+      ],
       description:
         "Quran from an engineer lens — static mushaf, named sources, tajwid, tadabbur, lineage.",
       customCss: ["./src/styles/global.css"],

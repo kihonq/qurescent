@@ -12,9 +12,15 @@
 ---
 
 **Project:** Qurescent  
-**Updated:** 2026-08-26  
+**Updated:** 2026-08-27  
 **Category:** Techdoc manual (Starlight) + mushaf reader  
 **Voice:** Learning the Quran from an engineer lens — sources, certainty, static tooling
+
+### Brand mark
+
+- **Mark:** crescent + ink dot
+- **Site assets:** `src/assets/logo-light.svg` / `logo-dark.svg`, `public/favicon.svg` (+ `.ico` / apple-touch)
+- Light: crescent `#9B2458`, dot `#5C1034` · Dark: crescent `#E891B0`, dot `#F3D0DF`
 
 ---
 
