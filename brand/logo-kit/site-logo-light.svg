@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">Qurescent</title>
+  <desc id="logo-desc">Crescent with ink dot</desc>
+  <path fill="#9B2458" d="M46.65 16.10A23.50 23.50 0 1 0 46.65 47.90A17.50 17.50 0 1 1 46.65 16.10Z"/>
+  <circle cx="54.15" cy="32.00" r="4.00" fill="#5C1034"/>
+</svg>
