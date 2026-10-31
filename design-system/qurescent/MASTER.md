@@ -18,9 +18,10 @@
 
 ### Brand mark
 
-- **Mark:** crescent + ink dot
+- **Mark:** Ink crescent (Concept C) — crafted crescent + round ink nuqta
+- **Masters / kit:** `brand/logo-kit/` (black, light/dark Plum Ink, small-size, web icons)
 - **Site assets:** `src/assets/logo-light.svg` / `logo-dark.svg`, `public/favicon.svg` (+ `.ico` / apple-touch)
-- Light: crescent `#9B2458`, dot `#5C1034` · Dark: crescent `#E891B0`, dot `#F3D0DF`
+- Light: crescent `#9B2458`, ink `#5C1034` · Dark: crescent `#E891B0`, ink `#F3D0DF`
 
 ---
 
